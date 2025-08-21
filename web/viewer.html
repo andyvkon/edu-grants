@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Edu/Grants Viewer</title>
+<style>
+  body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:#0b0d10;color:#e7eaf0}
+  header{padding:12px 16px;border-bottom:1px solid #1f2430;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  header strong{font-size:18px}
+  input,select,button{padding:8px;border-radius:8px;border:1px solid #2a3142;background:#12161d;color:#e7eaf0}
+  button{background:#19b394;border-color:#19b394;cursor:pointer}
+  .wrap{padding:12px 16px}
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  th,td{border-bottom:1px solid #1f2430;padding:8px 6px;vertical-align:top}
+  th{position:sticky;top:0;background:#0b0d10}
+  a{color:#61dafb;text-decoration:none}
+  a:hover{text-decoration:underline}
+  .grid{display:grid;grid-template-columns:1fr;gap:22px}
+  @media(min-width:1024px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:#0f141a;border:1px solid #1f2430;border-radius:12px;padding:10px}
+  .muted{color:#98a2b3}
+</style>
+</head>
+<body>
+<header>
+  <strong>Edu/Grants — Data Viewer</strong>
+  <input id="q" placeholder="Search text…"/>
+  <input id="location" placeholder="Location (e.g. Chicago)"/>
+  <select id="category">
+    <option value="">All categories</option>
+    <option>IT</option><option>AI</option><option>ESL</option>
+  </select>
+  <button id="reload">Reload</button>
+  <span class="muted">API: <code id="apiBase">http://127.0.0.1:8000</code></span>
+</header>
+
+<div class="wrap grid">
+  <div class="card"><h3>Grants</h3><div id="grants"></div></div>
+  <div class="card"><h3>Courses</h3><div id="courses"></div></div>
+  <div class="card"><h3>Scholarships</h3><div id="scholarships"></div></div>
+  <div class="card"><h3>Nonprofits</h3><div id="nonprofits"></div></div>
+</div>
+
+<script>
+const API = localStorage.getItem("API_BASE") || "http://127.0.0.1:8000";
+document.getElementById("apiBase").textContent = API;
+
+async function fetchJSON(path, params={}){
+  const url = new URL(API + path);
+  Object.entries(params).forEach(([k,v])=>{ if(v) url.searchParams.set(k,v) });
+  const res = await fetch(url);
+  if(!res.ok) throw new Error("API error " + res.status);
+  return res.json();
+}
+
+function table(elId, rows, cols){
+  const el = document.getElementById(elId);
+  if(!rows.length){ el.innerHTML = '<div class="muted">No data</div>'; return; }
+  const head = '<tr>' + cols.map(c=>`<th>${c.label}</th>`).join('') + '</tr>';
+  const body = rows.map(r=>{
+    return '<tr>' + cols.map(c=>{
+      const v = r[c.key] ?? '';
+      if(c.key==='link' && v) return `<td><a href="${v}" target="_blank" rel="noopener">link</a></td>`;
+      return `<td>${String(v).replaceAll('<','&lt;')}</td>`;
+    }).join('') + '</tr>';
+  }).join('');
+  el.innerHTML = `<table>${head}${body}</table>`;
+}
+
+async function reload(){
+  const q = document.getElementById('q').value.trim();
+  const location = document.getElementById('location').value.trim();
+  const category = document.getElementById('category').value.trim();
+
+  const [grants, courses, scholarships, nonprofits] = await Promise.all([
+    fetchJSON('/grants', { q, location }),
+    fetchJSON('/courses', { q, location, category }),
+    fetchJSON('/scholarships', { q, location }),
+    fetchJSON('/nonprofits', { q, location })
+  ]);
+
+  table('grants', grants, [
+    {key:'title',label:'Title'},{key:'description',label:'Description'},
+    {key:'location',label:'Location'},{key:'deadline',label:'Deadline'},
+    {key:'link',label:'Link'}
+  ]);
+  table('courses', courses, [
+    {key:'title',label:'Title'},{key:'provider',label:'Provider'},
+    {key:'category',label:'Category'},{key:'mode',label:'Mode'},
+    {key:'location',label:'Location'},{key:'link',label:'Link'}
+  ]);
+  table('scholarships', scholarships, [
+    {key:'title',label:'Title'},{key:'eligibility',label:'Eligibility'},
+    {key:'amount',label:'Amount'},{key:'location',label:'Location'},
+    {key:'link',label:'Link'}
+  ]);
+  table('nonprofits', nonprofits, [
+    {key:'name',label:'Name'},{key:'service',label:'Service'},
+    {key:'location',label:'Location'},{key:'link',label:'Link'}
+  ]);
+}
+document.getElementById('reload').addEventListener('click', reload);
+reload();
+</script>
+</body>
+</html>

@@ -1,0 +1,892 @@
+INFO:     Will watch for changes in these directories: ['C:\\Mine\\NIW\\edu-grants']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [20344] using WatchFiles
+INFO:     Started server process [21392]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Will watch for changes in these directories: ['C:\\Mine\\NIW\\edu-grants']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [22128] using WatchFiles
+INFO:     Started server process [22208]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:55024 - "GET /web/viewer.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55024 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:43402 - "GET /grant HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36520 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36520 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36520 - "GET /web/viewer.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:36520 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51204 - "GET /courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7468 - "GET /scholarships HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22531 - "GET /nonprofits HTTP/1.1" 200 OK
+INFO:     Will watch for changes in these directories: ['C:\\Mine\\NIW\\edu-grants']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [5396] using WatchFiles
+INFO:     Started server process [16228]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:27874 - "GET /web/viewer.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:27874 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:23792 - "GET /courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:27874 - "GET /nonprofits HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62693 - "GET /scholarships HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41962 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22838 - "GET /scholarships HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60282 - "GET /nonprofits HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64198 - "GET /courses?category=AI HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\main.py'. Reloading...
+INFO:     127.0.0.1:53722 - "GET /web/viewer.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62800 - "GET /courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53722 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36728 - "GET /nonprofits HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52320 - "GET /scholarships HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [16228]
+WARNING:  WatchFiles detected changes in 'app\main.py'. Reloading...
+INFO:     Started server process [13132]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [24712]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Will watch for changes in these directories: ['C:\\Mine\\NIW\\edu-grants']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [21352] using WatchFiles
+INFO:     Started server process [28548]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:6925 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:21291 - "GET / HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:21291 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4357 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30377 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35500 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4357 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35500 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30377 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/images/logo.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30377 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4357 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35500 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4357 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35500 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30377 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4357 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35500 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30377 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4357 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35500 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30377 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21291 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16922 - "GET /web/images/favicon-32x32.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35607 - "GET /web/index.html HTTP/1.1" 304 Not Modified
+INFO:     Will watch for changes in these directories: ['C:\\Mine\\NIW\\edu-grants']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [16156] using WatchFiles
+INFO:     Started server process [18628]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:26276 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55703 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55703 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48792 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54110 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10759 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55703 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48792 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54110 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10759 - "GET /web/images/logo.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10759 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54110 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55703 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48792 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10759 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48792 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55703 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10759 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54110 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48792 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55703 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10759 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55703 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48792 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54110 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/favicon-32x32.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10317 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9141 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7531 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1061 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10317 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9141 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1061 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7531 - "GET /web/images/logo.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9141 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10317 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9141 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7531 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10317 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1061 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9141 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1061 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7531 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10317 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9141 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1061 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7531 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10317 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1061 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10317 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7531 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26553 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1521 - "GET /web/images/favicon-32x32.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55858 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55858 - "GET /web/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:1511 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:1511 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38060 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31615 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60069 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14221 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15323 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38060 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31615 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60069 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /web/images/logo.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15323 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15323 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14221 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38060 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31615 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60069 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15323 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31615 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38060 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14221 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60069 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15323 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14221 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60069 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38060 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31615 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14221 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31615 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38060 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60069 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14221 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14221 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1511 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60069 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38060 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15323 - "GET /web/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:15323 - "GET /web/images/favicon-32x32.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28748 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:28748 - "GET /web/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:30179 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30179 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:30179 - "GET /web/images/logo_ladaniuk.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30179 - "GET /web/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:47928 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47928 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48159 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39356 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38955 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47928 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39356 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47928 - "GET /web/images/logo_ladaniuk.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39356 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48159 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38955 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38955 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48159 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39356 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39356 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47928 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38955 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48159 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38955 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48159 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39356 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47928 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48159 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5267 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48159 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57690 - "GET /web/images/favicon-32x32.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58163 - "GET /web/index.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58163 - "GET /web/images/logo_ladaniuk.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:41308 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22926 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15775 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61084 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22926 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15775 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61084 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22926 - "GET /web/images/logo_ladaniuk.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15775 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61084 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15775 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61084 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15775 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61084 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61084 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15775 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41308 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61084 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13625 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/images/favicon-32x32.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55717 - "GET /web/index.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60855 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64568 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64568 - "GET /web/images/logo_ladaniuk.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:25088 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25088 - "GET /web/images/Ladaniuk%20Brows%20Logo%20Design.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42306 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46950 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26721 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26721 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42306 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46950 - "GET /web/images/Ladaniuk%20Brows%20Logo%20Design.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46950 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46950 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26721 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42306 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42306 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26721 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46950 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26721 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46950 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42306 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26721 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5623 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4408 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:17128 - "GET /web/images/favicon-32x32.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18244 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6197 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:6197 - "GET /web/images/Ladaniuk%20Brows%20Logo%20Design.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:2803 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2803 - "GET /web/images/Ladaniuk%20Brows%20Logo%20Design.png HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:50235 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/css/bootstrap-custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34749 - "GET /web/css/ionicons.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7975 - "GET /web/css/simplebar.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11060 - "GET /web/css/tiny-slider.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/css/lity.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14757 - "GET /web/css/jquery.mb.YTPlayer.min.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/css/main.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34749 - "GET /web/css/main-darkgreen.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7975 - "GET /web/css/custom.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11060 - "GET /web/css/main_1.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14757 - "GET /web/images/Ladaniuk%20Brows%20Logo%20Design.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/images/info-img.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/images/client-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34749 - "GET /web/images/client-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7975 - "GET /web/images/client-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11060 - "GET /web/js/jquery.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/js/imagesloaded.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/js/bootstrap.bundle.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34749 - "GET /web/js/isotope.pkgd.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7975 - "GET /web/js/animatedModal.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11060 - "GET /web/js/tiny-slider.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/js/lity.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7975 - "GET /web/js/simplebar.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/js/jquery.mb.YTPlayer.min.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11060 - "GET /web/js/main.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/images/item-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34749 - "GET /web/images/item-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/images/item-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7975 - "GET /web/images/item-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14757 - "GET /web/images/item-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34749 - "GET /web/images/item-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/images/post-1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7975 - "GET /web/images/post-2.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50235 - "GET /web/images/post-3.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11060 - "GET /web/images/post-4.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14757 - "GET /web/images/post-6.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/images/post-5.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/images/home1.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14757 - "GET /web/images/video.jpg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14757 - "GET /web/fonts/ionicons.woff2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5930 - "GET /web/images/Ladaniuk%20Brows%20Logo%20Design.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41814 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:12133 - "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:12133 - "GET /web/js/bootstrap.bundle.min.js.map HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:28993 - "GET /web/viewer.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:27030 - "GET /scholarships HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16005 - "GET /nonprofits HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33658 - "GET /courses HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28993 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28993 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:28993 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28993 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7534 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7534 - "GET /web/images/logo.png HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47372 - "GET /web/index.html HTTP/1.1" 304 Not Modified
+WARNING:  WatchFiles detected changes in 'app\migrations\add_status.py'. Reloading...
+INFO:     127.0.0.1:1052 - "GET / HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:1052 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:24439 - "GET / HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:24439 - "GET /web/index.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:47458 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47458 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11245 - "GET /web/index.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:11245 - "GET / HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:11245 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11245 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18628]
+WARNING:  WatchFiles detected changes in 'app\migrations\add_status.py', 'app\migrations\check_status.py'. Reloading...
+INFO:     Started server process [30912]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [30548]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app\migrations\add_status_indexes.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [30548]
+WARNING:  WatchFiles detected changes in 'app\migrations\add_status_indexes.py'. Reloading...
+INFO:     Started server process [34000]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [12580]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in '.venv\Lib\site-packages\pygments\lexers\smv.py', '.venv\Lib\site-packages\pygments\lexers\archetype.py', '.venv\Lib\site-packages\pygments\styles\paraiso_light.py', '.venv\Lib\site-packages\pygments\lexers\_postgres_builtins.py', '.venv\Lib\site-packages\pygments\lexers\d.py', '.venv\Lib\site-packages\pygments\lexers\_csound_builtins.py', '.venv\Lib\site-packages\pygments\lexers\basic.py', '.venv\Lib\site-packages\pygments\lexers\diff.py', '.venv\Lib\site-packages\pygments\styles\igor.py', '.venv\Lib\site-packages\pygments\lexers\pointless.py', '.venv\Lib\site-packages\pygments\lexers\ezhil.py', '.venv\Lib\site-packages\pygments\lexers\igor.py', '.venv\Lib\site-packages\pygments\lexers\tnt.py', '.venv\Lib\site-packages\pygments\lexers\yang.py', '.venv\Lib\site-packages\pygments\lexers\_vim_builtins.py', '.venv\Lib\site-packages\pygments\styles\stata_dark.py', '.venv\Lib\site-packages\pygments\unistring.py', '.venv\Lib\site-packages\pygments\lexers\ooc.py', '.venv\Lib\site-packages\pygments\lexers\prolog.py', '.venv\Lib\site-packages\pygments\lexers\urbi.py', '.venv\Lib\site-packages\pygments\lexers\hare.py', '.venv\Lib\site-packages\pygments\styles\coffee.py', '.venv\Lib\site-packages\pygments\lexers\shell.py', '.venv\Lib\site-packages\pygments\lexers\algebra.py', '.venv\Lib\site-packages\pygments\styles\rainbow_dash.py', '.venv\Lib\site-packages\pygments\__main__.py', '.venv\Lib\site-packages\pygments\lexers\hdl.py', '.venv\Lib\site-packages\pygments\styles\bw.py', '.venv\Lib\site-packages\pygments\lexers\vyper.py', '.venv\Lib\site-packages\pygments\formatter.py', '.venv\Lib\site-packages\pygments\lexers\math.py', '.venv\Lib\site-packages\pygments\styles\tango.py', '.venv\Lib\site-packages\pygments\lexers\esoteric.py', '.venv\Lib\site-packages\pygments\__init__.py', '.venv\Lib\site-packages\pygments\lexers\sieve.py', '.venv\Lib\site-packages\pygments\lexers\html.py', '.venv\Lib\site-packages\pygments\lexers\bdd.py', '.venv\Lib\site-packages\pygments\lexers\matlab.py', '.venv\Lib\site-packages\pygments\lexers\_cocoa_builtins.py', '.venv\Lib\site-packages\pygments\lexers\rust.py', '.venv\Lib\site-packages\pygments\lexers\chapel.py', '.venv\Lib\site-packages\pygments\filters\__init__.py', '.venv\Lib\site-packages\pygments\lexers\ambient.py', '.venv\Lib\site-packages\pygments\lexers\compiled.py', '.venv\Lib\site-packages\pygments\lexers\automation.py', '.venv\Lib\site-packages\pygments\styles\inkpot.py', '.venv\Lib\site-packages\pygments\lexers\blueprint.py', '.venv\Lib\site-packages\pygments\lexers\sophia.py', '.venv\Lib\site-packages\pygments\lexers\idl.py', '.venv\Lib\site-packages\pygments\styles\emacs.py', '.venv\Lib\site-packages\pygments\lexers\pawn.py', '.venv\Lib\site-packages\pygments\lexers\rego.py', '.venv\Lib\site-packages\pygments\lexers\other.py', '.venv\Lib\site-packages\pygments\lexers\yara.py', '.venv\Lib\site-packages\pygments\lexers\_julia_builtins.py', '.venv\Lib\site-packages\pygments\lexers\modula2.py', '.venv\Lib\site-packages\pygments\lexers\javascript.py', '.venv\Lib\site-packages\pygments\styles\abap.py', '.venv\Lib\site-packages\pygments\styles\algol.py', '.venv\Lib\site-packages\pygments\lexers\factor.py', '.venv\Lib\site-packages\pygments\lexers\maple.py', '.venv\Lib\site-packages\pygments\formatters\__init__.py', '.venv\Lib\site-packages\pygments\lexers\_ada_builtins.py', '.venv\Lib\site-packages\pygments\lexers\installers.py', '.venv\Lib\site-packages\pygments\lexers\felix.py', '.venv\Lib\site-packages\pygments\formatters\groff.py', '.venv\Lib\site-packages\pygments\lexers\gcodelexer.py', '.venv\Lib\site-packages\pygments\lexers\jmespath.py', '.venv\Lib\site-packages\pygments\lexers\email.py', '.venv\Lib\site-packages\pygments\lexers\pddl.py', '.venv\Lib\site-packages\pygments\formatters\bbcode.py', '.venv\Lib\site-packages\pygments\lexers\sgf.py', '.venv\Lib\site-packages\pygments\lexers\lilypond.py', '.venv\Lib\site-packages\pygments\lexers\comal.py', '.venv\Lib\site-packages\pygments\lexers\inferno.py', '.venv\Lib\site-packages\pygments\lexers\csound.py', '.venv\Lib\site-packages\pygments\lexers\supercollider.py', '.venv\Lib\site-packages\pygments\styles\vim.py', '.venv\Lib\site-packages\pygments\lexers\actionscript.py', '.venv\Lib\site-packages\pygments\styles\_mapping.py', '.venv\Lib\site-packages\pygments\lexers\int_fiction.py', '.venv\Lib\site-packages\pygments\lexers\numbair.py', '.venv\Lib\site-packages\pygments\lexers\amdgpu.py', '.venv\Lib\site-packages\pygments\lexers\templates.py', '.venv\Lib\site-packages\pygments\lexers\srcinfo.py', '.venv\Lib\site-packages\pygments\lexers\stata.py', '.venv\Lib\site-packages\pygments\lexers\carbon.py', '.venv\Lib\site-packages\pygments\lexers\console.py', '.venv\Lib\site-packages\pygments\util.py', '.venv\Lib\site-packages\pygments\styles\native.py', '.venv\Lib\site-packages\pygments\styles\rrt.py', '.venv\Lib\site-packages\pygments\lexers\perl.py', '.venv\Lib\site-packages\pygments\lexers\clean.py', '.venv\Lib\site-packages\pygments\lexers\_mysql_builtins.py', '.venv\Lib\site-packages\pygments\lexers\erlang.py', '.venv\Lib\site-packages\pygments\styles\staroffice.py', '.venv\Lib\site-packages\pygments\lexers\ada.py', '.venv\Lib\site-packages\pygments\styles\friendly.py', '.venv\Lib\site-packages\pygments\lexers\_vbscript_builtins.py', '.venv\Lib\site-packages\pygments\lexers\elm.py', '.venv\Lib\site-packages\pygments\lexers\q.py', '.venv\Lib\site-packages\pygments\lexers\bare.py', '.venv\Lib\site-packages\pygments\lexers\futhark.py', '.venv\Lib\site-packages\pygments\lexers\_mql_builtins.py', '.venv\Lib\site-packages\pygments\lexers\ptx.py', '.venv\Lib\site-packages\pygments\formatters\other.py', '.venv\Lib\site-packages\pygments\lexers\graphics.py', '.venv\Lib\site-packages\pygments\styles\__init__.py', '.venv\Lib\site-packages\pygments\lexers\minecraft.py', '.venv\Lib\site-packages\pygments\lexers\rita.py', '.venv\Lib\site-packages\pygments\lexers\soong.py', '.venv\Lib\site-packages\pygments\lexers\rdf.py', '.venv\Lib\site-packages\pygments\lexers\markup.py', '.venv\Lib\site-packages\pygments\lexers\wgsl.py', '.venv\Lib\site-packages\pygments\lexers\lisp.py', '.venv\Lib\site-packages\pygments\lexers\asn1.py', '.venv\Lib\site-packages\pygments\lexers\teraterm.py', '.venv\Lib\site-packages\pygments\lexers\smithy.py', '.venv\Lib\site-packages\pygments\styles\vs.py', '.venv\Lib\site-packages\pygments\lexers\prql.py', '.venv\Lib\site-packages\pygments\lexers\apl.py', '.venv\Lib\site-packages\pygments\lexers\nix.py', '.venv\Lib\site-packages\pygments\lexers\phix.py', '.venv\Lib\site-packages\pygments\lexers\parsers.py', '.venv\Lib\site-packages\pygments\lexers\pascal.py', '.venv\Lib\site-packages\pygments\lexers\nimrod.py', '.venv\Lib\site-packages\pygments\lexers\praat.py', '.venv\Lib\site-packages\pygments\lexers\ldap.py', '.venv\Lib\site-packages\pygments\lexers\cddl.py', '.venv\Lib\site-packages\pygments\lexers\_sourcemod_builtins.py', '.venv\Lib\site-packages\pygments\styles\monokai.py', '.venv\Lib\site-packages\pygments\lexers\verification.py', '.venv\Lib\site-packages\pygments\lexers\bibtex.py', '.venv\Lib\site-packages\pygments\styles\lightbulb.py', '.venv\Lib\site-packages\pygments\lexers\_stan_builtins.py', '.venv\Lib\site-packages\pygments\lexers\lean.py', '.venv\Lib\site-packages\pygments\lexers\roboconf.py', '.venv\Lib\site-packages\pygments\lexers\tablegen.py', '.venv\Lib\site-packages\pygments\lexers\ride.py', '.venv\Lib\site-packages\pygments\formatters\svg.py', '.venv\Lib\site-packages\pygments\sphinxext.py', '.venv\Lib\site-packages\pygments\lexers\webmisc.py', '.venv\Lib\site-packages\pygments\lexers\c_like.py', '.venv\Lib\site-packages\pygments\lexers\_openedge_builtins.py', '.venv\Lib\site-packages\pygments\lexers\promql.py', '.venv\Lib\site-packages\pygments\lexers\_lua_builtins.py', '.venv\Lib\site-packages\pygments\formatters\pangomarkup.py', '.venv\Lib\site-packages\pygments\lexers\usd.py', '.venv\Lib\site-packages\pygments\lexers\tact.py', '.venv\Lib\site-packages\pygments\lexers\dotnet.py', '.venv\Lib\site-packages\pygments\lexers\c_cpp.py', '.venv\Lib\site-packages\pygments\lexers\_tsql_builtins.py', '.venv\Lib\site-packages\pygments\lexers\__init__.py', '.venv\Lib\site-packages\pygments\formatters\img.py', '.venv\Lib\site-packages\pygments\lexers\webidl.py', '.venv\Lib\site-packages\pygments\lexers\verifpal.py', '.venv\Lib\site-packages\pygments\lexers\apdlexer.py', '.venv\Lib\site-packages\pygments\lexers\robotframework.py', '.venv\Lib\site-packages\pygments\lexers\tls.py', '.venv\Lib\site-packages\pygments\lexers\unicon.py', '.venv\Lib\site-packages\pygments\formatters\latex.py', '.venv\Lib\site-packages\pygments\lexers\monte.py', '.venv\Lib\site-packages\pygments\filter.py', '.venv\Lib\site-packages\pygments\lexers\scripting.py', '.venv\Lib\site-packages\pygments\lexers\dax.py', '.venv\Lib\site-packages\pygments\cmdline.py', '.venv\Lib\site-packages\pygments\lexers\mosel.py', '.venv\Lib\site-packages\pygments\lexers\sas.py', '.venv\Lib\site-packages\pygments\lexers\codeql.py', '.venv\Lib\site-packages\pygments\lexers\solidity.py', '.venv\Lib\site-packages\pygments\lexers\procfile.py', '.venv\Lib\site-packages\pygments\lexers\mojo.py', '.venv\Lib\site-packages\pygments\lexers\ecl.py', '.venv\Lib\site-packages\pygments\lexers\haskell.py', '.venv\Lib\site-packages\pygments\lexers\business.py', '.venv\Lib\site-packages\pygments\lexers\dalvik.py', '.venv\Lib\site-packages\pygments\lexers\functional.py', '.venv\Lib\site-packages\pygments\styles\solarized.py', '.venv\Lib\site-packages\pygments\lexers\oberon.py', '.venv\Lib\site-packages\pygments\lexers\rebol.py', '.venv\Lib\site-packages\pygments\lexers\jsx.py', '.venv\Lib\site-packages\pygments\lexers\fift.py', '.venv\Lib\site-packages\pygments\lexers\gdscript.py', '.venv\Lib\site-packages\pygments\formatters\terminal256.py', '.venv\Lib\site-packages\pygments\styles\xcode.py', '.venv\Lib\site-packages\pygments\styles\pastie.py', '.venv\Lib\site-packages\pygments\styles\gh_dark.py', '.venv\Lib\site-packages\pygments\styles\zenburn.py', '.venv\Lib\site-packages\pygments\styles\default.py', '.venv\Lib\site-packages\pygments\lexers\capnproto.py', '.venv\Lib\site-packages\pygments\lexers\textedit.py', '.venv\Lib\site-packages\pygments\lexers\j.py', '.venv\Lib\site-packages\pygments\styles\nord.py', '.venv\Lib\site-packages\pygments\styles\fruity.py', '.venv\Lib\site-packages\pygments\lexers\pony.py', '.venv\Lib\site-packages\pygments\styles\autumn.py', '.venv\Lib\site-packages\pygments\lexers\macaulay2.py', '.venv\Lib\site-packages\pygments\lexers\arrow.py', '.venv\Lib\site-packages\pygments\lexers\devicetree.py', '.venv\Lib\site-packages\pygments\lexers\func.py', '.venv\Lib\site-packages\pygments\lexers\graph.py', '.venv\Lib\site-packages\pygments\lexers\json5.py', '.venv\Lib\site-packages\pygments\lexers\gleam.py', '.venv\Lib\site-packages\pygments\lexers\r.py', '.venv\Lib\site-packages\pygments\lexers\text.py', '.venv\Lib\site-packages\pygments\styles\material.py', '.venv\Lib\site-packages\pygments\lexers\asc.py', '.venv\Lib\site-packages\pygments\lexers\crystal.py', '.venv\Lib\site-packages\pygments\styles\perldoc.py', '.venv\Lib\site-packages\pygments\lexers\gsql.py', '.venv\Lib\site-packages\pygments\styles\gruvbox.py', '.venv\Lib\site-packages\pygments\lexers\foxpro.py', '.venv\Lib\site-packages\pygments\lexers\wren.py', '.venv\Lib\site-packages\pygments\lexers\grammar_notation.py', '.venv\Lib\site-packages\pygments\styles\onedark.py', '.venv\Lib\site-packages\pygments\lexers\ml.py', '.venv\Lib\site-packages\pygments\lexers\dylan.py', '.venv\Lib\site-packages\pygments\lexers\objective.py', '.venv\Lib\site-packages\pygments\lexers\textfmts.py', '.venv\Lib\site-packages\pygments\lexers\slash.py', '.venv\Lib\site-packages\pygments\lexers\fortran.py', '.venv\Lib\site-packages\pygments\styles\trac.py', '.venv\Lib\site-packages\pygments\lexers\data.py', '.venv\Lib\site-packages\pygments\styles\murphy.py', '.venv\Lib\site-packages\pygments\lexers\_scilab_builtins.py', '.venv\Lib\site-packages\pygments\styles\sas.py', '.venv\Lib\site-packages\pygments\lexers\julia.py', '.venv\Lib\site-packages\pygments\lexers\_lasso_builtins.py', '.venv\Lib\site-packages\pygments\lexers\berry.py', '.venv\Lib\site-packages\pygments\lexers\python.py', '.venv\Lib\site-packages\pygments\token.py', '.venv\Lib\site-packages\pygments\lexers\teal.py', '.venv\Lib\site-packages\pygments\lexers\ruby.py', '.venv\Lib\site-packages\pygments\lexers\_css_builtins.py', '.venv\Lib\site-packages\pygments\regexopt.py', '.venv\Lib\site-packages\pygments\lexers\forth.py', '.venv\Lib\site-packages\pygments\modeline.py', '.venv\Lib\site-packages\pygments\lexers\resource.py', '.venv\Lib\site-packages\pygments\lexers\special.py', '.venv\Lib\site-packages\pygments\lexers\haxe.py', '.venv\Lib\site-packages\pygments\lexers\bqn.py', '.venv\Lib\site-packages\pygments\styles\stata_light.py', '.venv\Lib\site-packages\pygments\lexers\dsls.py', '.venv\Lib\site-packages\pygments\lexers\varnish.py', '.venv\Lib\site-packages\pygments\lexers\floscript.py', '.venv\Lib\site-packages\pygments\lexers\testing.py', '.venv\Lib\site-packages\pygments\lexers\webassembly.py', '.venv\Lib\site-packages\pygments\styles\lilypond.py', '.venv\Lib\site-packages\pygments\console.py', '.venv\Lib\site-packages\pygments\lexers\sql.py', '.venv\Lib\site-packages\pygments\lexers\jsonnet.py', '.venv\Lib\site-packages\pygments\lexers\zig.py', '.venv\Lib\site-packages\pygments\formatters\rtf.py', '.venv\Lib\site-packages\pygments\lexers\maxima.py', '.venv\Lib\site-packages\pygments\lexers\_luau_builtins.py', '.venv\Lib\site-packages\pygments\lexers\wowtoc.py', '.venv\Lib\site-packages\pygments\lexers\modeling.py', '.venv\Lib\site-packages\pygments\lexers\qlik.py', '.venv\Lib\site-packages\pygments\lexers\_asy_builtins.py', '.venv\Lib\site-packages\pygments\lexers\graphql.py', '.venv\Lib\site-packages\pygments\lexers\rnc.py', '.venv\Lib\site-packages\pygments\lexers\dns.py', '.venv\Lib\site-packages\pygments\lexers\_lilypond_builtins.py', '.venv\Lib\site-packages\pygments\lexers\tcl.py', '.venv\Lib\site-packages\pygments\lexers\freefem.py', '.venv\Lib\site-packages\pygments\lexers\tlb.py', '.venv\Lib\site-packages\pygments\lexers\hexdump.py', '.venv\Lib\site-packages\pygments\lexers\_stata_builtins.py', '.venv\Lib\site-packages\pygments\lexers\graphviz.py', '.venv\Lib\site-packages\pygments\lexers\ul4.py', '.venv\Lib\site-packages\pygments\lexers\snobol.py', '.venv\Lib\site-packages\pygments\styles\borland.py', '.venv\Lib\site-packages\pygments\lexers\typoscript.py', '.venv\Lib\site-packages\pygments\lexers\_googlesql_builtins.py', '.venv\Lib\site-packages\pygments\lexers\configs.py', '.venv\Lib\site-packages\pygments\lexers\elpi.py', '.venv\Lib\site-packages\pygments\styles\paraiso_dark.py', '.venv\Lib\site-packages\pygments\lexers\_qlik_builtins.py', '.venv\Lib\site-packages\pygments\lexers\openscad.py', '.venv\Lib\site-packages\pygments\lexers\nit.py', '.venv\Lib\site-packages\pygments\lexers\mips.py', '.venv\Lib\site-packages\pygments\lexers\jslt.py', '.venv\Lib\site-packages\pygments\lexers\meson.py', '.venv\Lib\site-packages\pygments\lexers\trafficscript.py', '.venv\Lib\site-packages\pygments\styles\colorful.py', '.venv\Lib\site-packages\pygments\lexers\smalltalk.py', '.venv\Lib\site-packages\pygments\styles\algol_nu.py', '.venv\Lib\site-packages\pygments\lexers\_scheme_builtins.py', '.venv\Lib\site-packages\pygments\lexers\php.py', '.venv\Lib\site-packages\pygments\lexers\typst.py', '.venv\Lib\site-packages\pygments\lexers\kuin.py', '.venv\Lib\site-packages\pygments\lexers\fantom.py', '.venv\Lib\site-packages\pygments\lexers\scdoc.py', '.venv\Lib\site-packages\pygments\lexers\thingsdb.py', '.venv\Lib\site-packages\pygments\lexers\make.py', '.venv\Lib\site-packages\pygments\lexers\_usd_builtins.py', '.venv\Lib\site-packages\pygments\formatters\_mapping.py', '.venv\Lib\site-packages\pygments\lexers\arturo.py', '.venv\Lib\site-packages\pygments\lexers\_php_builtins.py', '.venv\Lib\site-packages\pygments\lexers\_sql_builtins.py', '.venv\Lib\site-packages\pygments\lexers\asm.py', '.venv\Lib\site-packages\pygments\styles\dracula.py', '.venv\Lib\site-packages\pygments\lexers\agile.py', '.venv\Lib\site-packages\pygments\lexers\qvt.py', '.venv\Lib\site-packages\pygments\lexers\iolang.py', '.venv\Lib\site-packages\pygments\styles\manni.py', '.venv\Lib\site-packages\pygments\lexers\parasail.py', '.venv\Lib\site-packages\pygments\formatters\terminal.py', '.venv\Lib\site-packages\pygments\lexers\_cl_builtins.py', '.venv\Lib\site-packages\pygments\lexers\web.py', '.venv\Lib\site-packages\pygments\lexers\ncl.py', '.venv\Lib\site-packages\pygments\lexers\theorem.py', '.venv\Lib\site-packages\pygments\lexers\kusto.py', '.venv\Lib\site-packages\pygments\lexers\boa.py', '.venv\Lib\site-packages\pygments\lexers\jvm.py', '.venv\Lib\site-packages\pygments\lexers\savi.py', '.venv\Lib\site-packages\pygments\lexers\_mapping.py', '.venv\Lib\site-packages\pygments\scanner.py', '.venv\Lib\site-packages\pygments\styles\friendly_grayscale.py', '.venv\Lib\site-packages\pygments\formatters\html.py', '.venv\Lib\site-packages\pygments\lexers\css.py', '.venv\Lib\site-packages\pygments\lexers\eiffel.py', '.venv\Lib\site-packages\pygments\lexers\mime.py', '.venv\Lib\site-packages\pygments\lexers\go.py', '.venv\Lib\site-packages\pygments\lexers\cplint.py', '.venv\Lib\site-packages\pygments\plugin.py', '.venv\Lib\site-packages\pygments\lexers\x10.py', '.venv\Lib\site-packages\pygments\styles\lovelace.py', '.venv\Lib\site-packages\pygments\lexers\spice.py', '.venv\Lib\site-packages\pygments\lexer.py', '.venv\Lib\site-packages\pygments\styles\arduino.py', '.venv\Lib\site-packages\pygments\lexers\vip.py', '.venv\Lib\site-packages\pygments\lexers\xorg.py', '.venv\Lib\site-packages\pygments\lexers\whiley.py', '.venv\Lib\site-packages\pygments\lexers\tal.py', '.venv\Lib\site-packages\pygments\style.py', '.venv\Lib\site-packages\pygments\formatters\irc.py', '.venv\Lib\site-packages\pygments\lexers\ampl.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [12580]
+WARNING:  WatchFiles detected changes in '.venv\Lib\site-packages\rich\panel.py', '.venv\Lib\site-packages\mdurl\_format.py', '.venv\Lib\site-packages\markdown_it\rules_inline\linkify.py', '.venv\Lib\site-packages\rich\constrain.py', '.venv\Lib\site-packages\rich\_pick.py', '.venv\Lib\site-packages\markdown_it\common\utils.py', '.venv\Lib\site-packages\markdown_it\common\normalize_url.py', '.venv\Lib\site-packages\rich\layout.py', '.venv\Lib\site-packages\markdown_it\rules_inline\autolink.py', '.venv\Lib\site-packages\markdown_it\rules_block\table.py', '.venv\Lib\site-packages\pygments\lexers\shell.py', '.venv\Lib\site-packages\rich\_ratio.py', '.venv\Lib\site-packages\rich\status.py', '.venv\Lib\site-packages\rich\repr.py', '.venv\Lib\site-packages\rich\segment.py', '.venv\Lib\site-packages\rich\_emoji_replace.py', '.venv\Lib\site-packages\markdown_it\rules_core\linkify.py', '.venv\Lib\site-packages\markdown_it\presets\commonmark.py', '.venv\Lib\site-packages\markdown_it\_punycode.py', '.venv\Lib\site-packages\rich\columns.py', '.venv\Lib\site-packages\rich\ansi.py', '.venv\Lib\site-packages\mdurl\_encode.py', '.venv\Lib\site-packages\rich\markup.py', '.venv\Lib\site-packages\markdown_it\rules_inline\__init__.py', '.venv\Lib\site-packages\rich\protocol.py', '.venv\Lib\site-packages\rich\cells.py', '.venv\Lib\site-packages\rich\_loop.py', '.venv\Lib\site-packages\mdurl\_url.py', '.venv\Lib\site-packages\rich\styled.py', '.venv\Lib\site-packages\markdown_it\rules_inline\state_inline.py', '.venv\Lib\site-packages\rich\screen.py', '.venv\Lib\site-packages\markdown_it\rules_core\block.py', '.venv\Lib\site-packages\markdown_it\token.py', '.venv\Lib\site-packages\rich\style.py', '.venv\Lib\site-packages\rich\_palettes.py', '.venv\Lib\site-packages\markdown_it\parser_block.py', '.venv\Lib\site-packages\markdown_it\helpers\parse_link_title.py', '.venv\Lib\site-packages\markdown_it\rules_inline\image.py', 'app\migrations\check_status.py', '.venv\Lib\site-packages\markdown_it\common\entities.py', '.venv\Lib\site-packages\markdown_it\rules_inline\escape.py', '.venv\Lib\site-packages\rich\color_triplet.py', '.venv\Lib\site-packages\rich\_log_render.py', '.venv\Lib\site-packages\rich\syntax.py', '.venv\Lib\site-packages\markdown_it\cli\parse.py', '.venv\Lib\site-packages\rich\_windows.py', '.venv\Lib\site-packages\markdown_it\rules_inline\backticks.py', '.venv\Lib\site-packages\markdown_it\rules_core\text_join.py', '.venv\Lib\site-packages\rich\prompt.py', '.venv\Lib\site-packages\markdown_it\rules_block\blockquote.py', '.venv\Lib\site-packages\rich\progress_bar.py', '.venv\Lib\site-packages\rich\traceback.py', '.venv\Lib\site-packages\markdown_it\parser_core.py', '.venv\Lib\site-packages\rich\box.py', '.venv\Lib\site-packages\markdown_it\rules_core\normalize.py', '.venv\Lib\site-packages\markdown_it\rules_block\state_block.py', '.venv\Lib\site-packages\rich\emoji.py', '.venv\Lib\site-packages\rich\pager.py', '.venv\Lib\site-packages\markdown_it\helpers\parse_link_destination.py', '.venv\Lib\site-packages\rich\themes.py', '.venv\Lib\site-packages\rich\progress.py', '.venv\Lib\site-packages\rich\bar.py', '.venv\Lib\site-packages\mdurl\__init__.py', '.venv\Lib\site-packages\rich\pretty.py', '.venv\Lib\site-packages\rich\json.py', '.venv\Lib\site-packages\rich\errors.py', '.venv\Lib\site-packages\rich\_windows_renderer.py', '.venv\Lib\site-packages\markdown_it\rules_inline\fragments_join.py', '.venv\Lib\site-packages\markdown_it\_compat.py', '.venv\Lib\site-packages\markdown_it\rules_inline\balance_pairs.py', '.venv\Lib\site-packages\rich\_fileno.py', '.venv\Lib\site-packages\markdown_it\rules_block\lheading.py', '.venv\Lib\site-packages\rich\_inspect.py', '.venv\Lib\site-packages\rich\terminal_theme.py', '.venv\Lib\site-packages\rich\table.py', '.venv\Lib\site-packages\markdown_it\cli\__init__.py', '.venv\Lib\site-packages\rich\abc.py', '.venv\Lib\site-packages\rich\text.py', '.venv\Lib\site-packages\rich\_extension.py', '.venv\Lib\site-packages\markdown_it\presets\default.py', '.venv\Lib\site-packages\rich\padding.py', '.venv\Lib\site-packages\markdown_it\main.py', '.venv\Lib\site-packages\markdown_it\rules_core\inline.py', '.venv\Lib\site-packages\rich\measure.py', '.venv\Lib\site-packages\markdown_it\rules_block\reference.py', '.venv\Lib\site-packages\rich\tree.py', '.venv\Lib\site-packages\markdown_it\rules_core\smartquotes.py', '.venv\Lib\site-packages\markdown_it\common\__init__.py', '.venv\Lib\site-packages\markdown_it\rules_core\__init__.py', '.venv\Lib\site-packages\rich\color.py', '.venv\Lib\site-packages\rich\__init__.py', '.venv\Lib\site-packages\rich\filesize.py', '.venv\Lib\site-packages\rich\_cell_widths.py', '.venv\Lib\site-packages\markdown_it\rules_block\__init__.py', '.venv\Lib\site-packages\markdown_it\helpers\__init__.py', '.venv\Lib\site-packages\rich\live_render.py', '.venv\Lib\site-packages\markdown_it\parser_inline.py', '.venv\Lib\site-packages\markdown_it\ruler.py', '.venv\Lib\site-packages\rich\_null_file.py', '.venv\Lib\site-packages\markdown_it\presets\__init__.py', '.venv\Lib\site-packages\markdown_it\rules_inline\strikethrough.py', '.venv\Lib\site-packages\markdown_it\presets\zero.py', '.venv\Lib\site-packages\markdown_it\rules_inline\html_inline.py', '.venv\Lib\site-packages\rich\console.py', '.venv\Lib\site-packages\markdown_it\rules_inline\entity.py', '.venv\Lib\site-packages\rich\_timer.py', '.venv\Lib\site-packages\rich\highlighter.py', '.venv\Lib\site-packages\markdown_it\helpers\parse_link_label.py', '.venv\Lib\site-packages\rich\containers.py', '.venv\Lib\site-packages\markdown_it\rules_block\code.py', '.venv\Lib\site-packages\rich\region.py', '.venv\Lib\site-packages\markdown_it\rules_block\paragraph.py', '.venv\Lib\site-packages\markdown_it\rules_core\state_core.py', '.venv\Lib\site-packages\markdown_it\utils.py', '.venv\Lib\site-packages\rich\control.py', '.venv\Lib\site-packages\rich\__main__.py', '.venv\Lib\site-packages\markdown_it\rules_core\replacements.py', '.venv\Lib\site-packages\rich\default_styles.py', '.venv\Lib\site-packages\markdown_it\tree.py', '.venv\Lib\site-packages\markdown_it\rules_inline\newline.py', '.venv\Lib\site-packages\markdown_it\rules_block\html_block.py', '.venv\Lib\site-packages\markdown_it\renderer.py', '.venv\Lib\site-packages\markdown_it\rules_block\heading.py', '.venv\Lib\site-packages\markdown_it\__init__.py', '.venv\Lib\site-packages\markdown_it\rules_inline\emphasis.py', '.venv\Lib\site-packages\rich\file_proxy.py', '.venv\Lib\site-packages\rich\scope.py', '.venv\Lib\site-packages\mdurl\_decode.py', '.venv\Lib\site-packages\markdown_it\rules_inline\link.py', '.venv\Lib\site-packages\pygments\lexers\php.py', '.venv\Lib\site-packages\markdown_it\rules_block\hr.py', '.venv\Lib\site-packages\rich\diagnose.py', '.venv\Lib\site-packages\rich\_export_format.py', '.venv\Lib\site-packages\rich\spinner.py', '.venv\Lib\site-packages\rich\_win32_console.py', '.venv\Lib\site-packages\rich\palette.py', '.venv\Lib\site-packages\rich\markdown.py', '.venv\Lib\site-packages\rich\_spinners.py', '.venv\Lib\site-packages\markdown_it\rules_block\list.py', '.venv\Lib\site-packages\rich\live.py', '.venv\Lib\site-packages\rich\jupyter.py', '.venv\Lib\site-packages\markdown_it\rules_inline\text.py', '.venv\Lib\site-packages\rich\align.py', '.venv\Lib\site-packages\rich\_stack.py', '.venv\Lib\site-packages\rich\_emoji_codes.py', '.venv\Lib\site-packages\markdown_it\common\html_blocks.py', '.venv\Lib\site-packages\rich\logging.py', '.venv\Lib\site-packages\rich\_wrap.py', '.venv\Lib\site-packages\mdurl\_parse.py', '.venv\Lib\site-packages\markdown_it\rules_block\fence.py', '.venv\Lib\site-packages\rich\rule.py', '.venv\Lib\site-packages\markdown_it\common\html_re.py', '.venv\Lib\site-packages\rich\theme.py'. Reloading...
+INFO:     Started server process [34140]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [32092]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app\db.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [32092]
+WARNING:  WatchFiles detected changes in 'app\db.py'. Reloading...
+INFO:     Started server process [31600]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [33820]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'security.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [33820]
+WARNING:  WatchFiles detected changes in 'main.py', 'routers\content.py'. Reloading...
+INFO:     Started server process [34424]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [34152]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:62179 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62179 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47739 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47739 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47739 - "GET /grants HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40959 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40959 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13196 - "GET /openapi.json HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\routers\v2_grants.py'. Reloading...
+INFO:     127.0.0.1:30036 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:30036 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51926 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14650 - "GET /web/index.html HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:26094 - "GET /web/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40671 - "GET /v2/grants HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40671 - "GET /v2/grants?include_status=all HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40671 - "PATCH /v2/grants/1/unpublish HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40671 - "PATCH /v2/grants/1/publish HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:2843 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64262 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64262 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44453 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44453 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42411 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42411 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56548 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56548 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56548 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56548 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14449 - "GET /v2/grants HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:14449 - "GET /v2/grants?include_status=all HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:14449 - "PATCH /v2/grants/1/unpublish HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:14449 - "PATCH /v2/grants/1/publish HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:14455 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:14455 - "GET /v2/grants HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:14455 - "GET /v2/grants?include_status=all HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:14455 - "PATCH /v2/grants/1/unpublish HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:14455 - "PATCH /v2/grants/1/publish HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36915 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36915 - "GET /v2/grants HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36915 - "GET /v2/grants?include_status=all HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36915 - "PATCH /v2/grants/1/unpublish HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36915 - "PATCH /v2/grants/1/publish HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [34152]
+WARNING:  WatchFiles detected changes in 'app\main.backup.py', 'app\start_v2.py', 'app\routers\v2_grants.py', 'main.py', 'app\security.py', 'app\__init__.py', 'app\main.py', 'app\routers\__init__.py'. Reloading...
+INFO:     Started server process [35608]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [30488]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:8172 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8172 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21711 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21711 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25313 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61563 - "GET /v2/grants HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:61563 - "GET /v2/grants/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61563 - "GET /v2/grants?include_status=all HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:61563 - "GET /v2/grants/?include_status=all HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61563 - "PATCH /v2/grants/1/unpublish HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61563 - "PATCH /v2/grants/1/publish HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61562 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61562 - "GET /openapi.json HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\main.py'. Reloading...
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57374 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [30488]
+WARNING:  WatchFiles detected changes in 'app\main.py'. Reloading...
+INFO:     Started server process [20488]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 721, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\starlette\routing.py", line 700, in lifespan
+    await receive()
+  File "C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 137, in receive
+    return await self.receive_queue.get()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Randy\AppData\Local\Programs\Python\Python313\Lib\asyncio\queues.py", line 186, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+INFO:     Started server process [21596]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app\boot_all.py'. Reloading...
+INFO:     127.0.0.1:42041 - "GET /docs HTTP/1.1" 200 OK
+C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\fastapi\openapi\utils.py:207: UserWarning: Duplicate Operation ID list_grants_v2_grants__get for function list_grants at C:\Mine\NIW\edu-grants\app\routers\v2_grants.py
+  warnings.warn(message, stacklevel=1)
+C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\fastapi\openapi\utils.py:207: UserWarning: Duplicate Operation ID get_grant_v2_grants__item_id__get for function get_grant at C:\Mine\NIW\edu-grants\app\routers\v2_grants.py
+  warnings.warn(message, stacklevel=1)
+C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\fastapi\openapi\utils.py:207: UserWarning: Duplicate Operation ID publish_grant_v2_grants__item_id__publish_patch for function publish_grant at C:\Mine\NIW\edu-grants\app\routers\v2_grants.py
+  warnings.warn(message, stacklevel=1)
+C:\Mine\NIW\edu-grants\.venv\Lib\site-packages\fastapi\openapi\utils.py:207: UserWarning: Duplicate Operation ID unpublish_grant_v2_grants__item_id__unpublish_patch for function unpublish_grant at C:\Mine\NIW\edu-grants\app\routers\v2_grants.py
+  warnings.warn(message, stacklevel=1)
+INFO:     127.0.0.1:42041 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42041 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [21596]
+INFO:     Started server process [34444]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
