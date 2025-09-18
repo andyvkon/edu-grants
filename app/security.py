@@ -1,9 +1,7 @@
-﻿import os
 from fastapi import Header, HTTPException, status
 
-ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "dev-admin")  # поменяй в проде
+ADMIN_TOKEN_DEFAULT = 'dev-admin'
 
-def require_admin(x_admin_token: str = Header(default="")):
-    if x_admin_token != ADMIN_TOKEN:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="admin token required")
-    return True
+def require_admin(x_admin_token: str | None = Header(None, convert_underscores=False)):
+    if not x_admin_token or x_admin_token != ADMIN_TOKEN_DEFAULT:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Invalid X-Admin-Token')

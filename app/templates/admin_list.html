@@ -1,0 +1,65 @@
+﻿{% extends "base.html" %}
+{% block content %}
+  <div class="flex items-center justify-between mb-4">
+    <div class="text-xl font-semibold">Управление публикациями</div>
+    <a href="/site/{{table}}" class="text-blue-600 underline">Сайт: /site/{{table}}</a>
+  </div>
+
+  <div class="flex flex-wrap gap-2 mb-4">
+    {% for t in tables %}
+      <a class="px-3 py-1 rounded border {% if t==table %}bg-blue-600 text-white{% else %}bg-white{% endif %}" href="/admin?table={{t}}&include_status={{include_status}}">{{t}}</a>
+    {% endfor %}
+  </div>
+
+  <form class="flex gap-2 mb-4">
+    <input type="hidden" name="table" value="{{table}}" />
+    <select name="include_status" class="border rounded px-2 py-1">
+      <option value="all"       {% if include_status=='all' %}selected{% endif %}>all</option>
+      <option value="published" {% if include_status=='published' %}selected{% endif %}>published</option>
+      <option value="draft"     {% if include_status=='draft' %}selected{% endif %}>draft</option>
+    </select>
+    <input name="q" value="{{q or ''}}" placeholder="поиск (title/description)" class="border rounded px-2 py-1 w-64" />
+    <button class="px-3 py-1 rounded bg-gray-800 text-white">Фильтр</button>
+  </form>
+
+  <form method="post" action="/admin/{{table}}/bulk" class="mb-4">
+    <button name="action" value="publish_all_drafts" class="px-3 py-1 rounded bg-green-600 text-white">Опубликовать все draft</button>
+  </form>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border rounded">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="text-left px-3 py-2">id</th>
+          <th class="text-left px-3 py-2">title</th>
+          <th class="text-left px-3 py-2">status</th>
+          <th class="text-left px-3 py-2">действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+          <tr class="border-t">
+            <td class="px-3 py-2">{{ r.get('id') }}</td>
+            <td class="px-3 py-2">{{ r.get('title') or r.get('name') or (r|list)[1] }}</td>
+            <td class="px-3 py-2">
+              <span class="px-2 py-0.5 rounded text-sm {% if r.get('status')=='published' %}bg-green-100 text-green-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                {{ r.get('status') }}
+              </span>
+            </td>
+            <td class="px-3 py-2">
+              {% if r.get('status')=='published' %}
+                <form method="post" action="/admin/{{table}}/{{r.get('id')}}/unpublish" class="inline">
+                  <button class="px-3 py-1 rounded bg-yellow-600 text-white">Снять</button>
+                </form>
+              {% else %}
+                <form method="post" action="/admin/{{table}}/{{r.get('id')}}/publish" class="inline">
+                  <button class="px-3 py-1 rounded bg-blue-600 text-white">Опубликовать</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

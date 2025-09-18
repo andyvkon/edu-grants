@@ -1,0 +1,9 @@
+﻿{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-2xl font-bold mb-4">Admin login</h1>
+  {% if error %}<div class="mb-3 text-red-600">Неверный токен</div>{% endif %}
+  <form method="post" action="/admin/login" class="space-y-3">
+    <input name="token" type="password" placeholder="X-Admin-Token" class="border rounded px-3 py-2 w-72" />
+    <button class="bg-blue-600 text-white px-4 py-2 rounded">Войти</button>
+  </form>
+{% endblock %}

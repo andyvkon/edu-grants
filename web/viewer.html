@@ -20,6 +20,14 @@
   @media(min-width:1024px){.grid{grid-template-columns:1fr 1fr}}
   .card{background:#0f141a;border:1px solid #1f2430;border-radius:12px;padding:10px}
   .muted{color:#98a2b3}
+  .loading{color:#19b394;font-style:italic}
+  .deadline-soon{color:#e74c3c;font-weight:bold}
+  .deadline-mid{color:#f39c12;font-weight:bold}
+  .deadline-far{color:#2ecc71;font-weight:bold}
+  .card-mode{display:grid;gap:12px}
+  .grant-card{border:1px solid #1f2430;border-radius:8px;padding:10px;background:#12161d}
+  .grant-card h4{margin:0 0 6px}
+  .grant-card .muted{font-size:13px}
 </style>
 </head>
 <body>
@@ -32,6 +40,7 @@
     <option>IT</option><option>AI</option><option>ESL</option>
   </select>
   <button id="reload">Reload</button>
+  <button id="toggleView">Toggle Cards</button>
   <span class="muted">API: <code id="apiBase">http://127.0.0.1:8000</code></span>
 </header>
 
@@ -45,6 +54,18 @@
 <script>
 const API = localStorage.getItem("API_BASE") || "http://127.0.0.1:8000";
 document.getElementById("apiBase").textContent = API;
+let cardMode = false;
+
+function saveFilters(){
+  localStorage.setItem("q", document.getElementById('q').value.trim());
+  localStorage.setItem("location", document.getElementById('location').value.trim());
+  localStorage.setItem("category", document.getElementById('category').value.trim());
+}
+function loadFilters(){
+  ['q','location','category'].forEach(id=>{
+    if(localStorage.getItem(id)) document.getElementById(id).value = localStorage.getItem(id);
+  });
+}
 
 async function fetchJSON(path, params={}){
   const url = new URL(API + path);
@@ -54,14 +75,43 @@ async function fetchJSON(path, params={}){
   return res.json();
 }
 
+function deadlineClass(dateStr){
+  if(!dateStr) return '';
+  const d = new Date(dateStr);
+  if(isNaN(d)) return '';
+  const diff = (d - new Date())/86400000;
+  if(diff < 0) return 'muted';
+  if(diff <= 7) return 'deadline-soon';
+  if(diff <= 30) return 'deadline-mid';
+  return 'deadline-far';
+}
+
 function table(elId, rows, cols){
   const el = document.getElementById(elId);
   if(!rows.length){ el.innerHTML = '<div class="muted">No data</div>'; return; }
+
+  // special card mode for grants
+  if(cardMode && elId==='grants'){
+    el.className = "card-mode";
+    el.innerHTML = rows.map(r=>`
+      <div class="grant-card">
+        <h4>${r.title||'Untitled'}</h4>
+        <p>${r.description||''}</p>
+        <p class="muted">${r.location||''}</p>
+        <p class="${deadlineClass(r.deadline)}">${r.deadline||''}</p>
+        ${r.link?`<a href="${r.link}" target="_blank">Apply here</a>`:''}
+      </div>`).join('');
+    return;
+  } else {
+    el.className = "";
+  }
+
   const head = '<tr>' + cols.map(c=>`<th>${c.label}</th>`).join('') + '</tr>';
   const body = rows.map(r=>{
     return '<tr>' + cols.map(c=>{
-      const v = r[c.key] ?? '';
+      let v = r[c.key] ?? '';
       if(c.key==='link' && v) return `<td><a href="${v}" target="_blank" rel="noopener">link</a></td>`;
+      if(c.key==='deadline' && v) return `<td class="${deadlineClass(v)}">${v}</td>`;
       return `<td>${String(v).replaceAll('<','&lt;')}</td>`;
     }).join('') + '</tr>';
   }).join('');
@@ -69,38 +119,58 @@ function table(elId, rows, cols){
 }
 
 async function reload(){
+  saveFilters();
   const q = document.getElementById('q').value.trim();
   const location = document.getElementById('location').value.trim();
   const category = document.getElementById('category').value.trim();
 
-  const [grants, courses, scholarships, nonprofits] = await Promise.all([
-    fetchJSON('/grants', { q, location }),
-    fetchJSON('/courses', { q, location, category }),
-    fetchJSON('/scholarships', { q, location }),
-    fetchJSON('/nonprofits', { q, location })
-  ]);
+  ['grants','courses','scholarships','nonprofits'].forEach(id=>{
+    document.getElementById(id).innerHTML = '<div class="loading">Loading…</div>';
+  });
 
-  table('grants', grants, [
-    {key:'title',label:'Title'},{key:'description',label:'Description'},
-    {key:'location',label:'Location'},{key:'deadline',label:'Deadline'},
-    {key:'link',label:'Link'}
-  ]);
-  table('courses', courses, [
-    {key:'title',label:'Title'},{key:'provider',label:'Provider'},
-    {key:'category',label:'Category'},{key:'mode',label:'Mode'},
-    {key:'location',label:'Location'},{key:'link',label:'Link'}
-  ]);
-  table('scholarships', scholarships, [
-    {key:'title',label:'Title'},{key:'eligibility',label:'Eligibility'},
-    {key:'amount',label:'Amount'},{key:'location',label:'Location'},
-    {key:'link',label:'Link'}
-  ]);
-  table('nonprofits', nonprofits, [
-    {key:'name',label:'Name'},{key:'service',label:'Service'},
-    {key:'location',label:'Location'},{key:'link',label:'Link'}
-  ]);
+  try{
+    const [grants, courses, scholarships, nonprofits] = await Promise.all([
+      fetchJSON('/grants', { q, location }),
+      fetchJSON('/courses', { q, location, category }),
+      fetchJSON('/scholarships', { q, location }),
+      fetchJSON('/nonprofits', { q, location })
+    ]);
+
+    table('grants', grants, [
+      {key:'title',label:'Title'},{key:'description',label:'Description'},
+      {key:'location',label:'Location'},{key:'deadline',label:'Deadline'},
+      {key:'link',label:'Link'}
+    ]);
+    table('courses', courses, [
+      {key:'title',label:'Title'},{key:'provider',label:'Provider'},
+      {key:'category',label:'Category'},{key:'mode',label:'Mode'},
+      {key:'location',label:'Location'},{key:'link',label:'Link'}
+    ]);
+    table('scholarships', scholarships, [
+      {key:'title',label:'Title'},{key:'eligibility',label:'Eligibility'},
+      {key:'amount',label:'Amount'},{key:'location',label:'Location'},
+      {key:'link',label:'Link'}
+    ]);
+    table('nonprofits', nonprofits, [
+      {key:'name',label:'Name'},{key:'service',label:'Service'},
+      {key:'location',label:'Location'},{key:'link',label:'Link'}
+    ]);
+  }catch(err){
+    ['grants','courses','scholarships','nonprofits'].forEach(id=>{
+      document.getElementById(id).innerHTML = `<div class="muted">Error: ${err.message}</div>`;
+    });
+  }
 }
+
 document.getElementById('reload').addEventListener('click', reload);
+document.getElementById('toggleView').addEventListener('click', ()=>{
+  cardMode = !cardMode;
+  reload();
+});
+['q','location','category'].forEach(id=>{
+  document.getElementById(id).addEventListener('change', reload);
+});
+loadFilters();
 reload();
 </script>
 </body>

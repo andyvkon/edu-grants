@@ -1,4 +1,4 @@
-﻿from fastapi import FastAPI
+﻿﻿from fastapi import FastAPI
 # (оставь тут свои ИМЕЮЩИЕСЯ импорты роутеров, если были)
 from app.routers.v2_grants import router as v2_grants_router  # ← наш новый
 
@@ -13,4 +13,3 @@ def root():
 
 from app.routers.v2_grants import router as v2_grants_router
 app.include_router(v2_grants_router)
-

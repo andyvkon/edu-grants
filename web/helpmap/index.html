@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <title>Карта помощи — Cook County</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+  <style>
+    :root { --brand:#0c8; --muted:#666; }
+    *{ box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#222;}
+    header { padding:10px 12px; border-bottom:1px solid #eee; display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    header > * { font-size:14px; }
+    #brand { font-weight:700; font-size:16px; margin-right:4px;}
+    #map { height: calc(100vh - 120px); width: 100%; }
+    .panel { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    input[type="text"], select { padding: 8px; border:1px solid #ddd; border-radius:8px; min-width: 150px;}
+    button { padding: 8px 12px; border:1px solid var(--brand); border-radius:8px; background:var(--brand); color:#fff; cursor:pointer; }
+    button.secondary { background:#fff; color:var(--brand); }
+    .chip { padding: 4px 8px; border:1px solid #ddd; border-radius:999px; display:inline-flex; align-items:center; gap:6px; background:#fafafa; }
+    .count { font-weight:600; }
+    .lang { display:flex; gap:6px; align-items:center; }
+    .legend { display:flex; gap:8px; flex-wrap:wrap; padding:8px 12px; border-bottom:1px solid #eee; }
+    .legend .item { display:flex; gap:6px; align-items:center; color:#333; font-size:13px; }
+    .legend .dot { font-size:18px; }
+    .toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-left:auto; }
+    .note { color:var(--muted); font-size:12px; }
+    .toggles { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .linkbar { padding:6px 12px; display:flex; gap:10px; flex-wrap:wrap; border-bottom:1px solid #eee; background:#fcfcfc; }
+    .linkbar a { color:#0066cc; text-decoration:none; font-size:13px; }
+    .linkbar a:hover { text-decoration:underline; }
+    @media (max-width:640px){
+      #map{ height: calc(100vh - 160px); }
+      header{ gap:6px; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <strong id="brand">Помощь рядом — Cook County</strong>
+
+  <div class="panel">
+    <input id="q" type="text" placeholder="Поиск адрес/индекс/название"/>
+    <input id="zip" type="text" placeholder="Индекс (ZIP)"/>
+    <select id="type">
+      <option value="all">Все типы</option>
+      <option value="food_bank">Еда (Food bank)</option>
+      <option value="shelter">Приют/ночлег</option>
+      <option value="infant_nutrition">Питание для младенцев (WIC)</option>
+      <option value="free_clothes">Бесплатная одежда</option>
+      <option value="addiction_recovery">Лечение зависимостей</option>
+      <option value="idhs">IDHS офис</option>
+    </select>
+    <span class="chip">
+      <label for="radius_km" id="radiusLabel">Радиус</label>
+      <select id="radius_km">
+        <option value="10">10км</option>
+        <option value="25" selected>25км</option>
+        <option value="50">50км</option>
+      </select>
+    </span>
+    <div class="toggles">
+      <label class="chip"><input id="useApi" type="checkbox" checked> <span id="useApiLabel">API</span></label>
+      <label class="chip"><input id="useOffline" type="checkbox" checked> <span id="useOfflineLabel">Оффлайн-данные Cook</span></label>
+    </div>
+    <button id="nearMe">Рядом</button>
+    <button id="searchBtn">Найти</button>
+    <span id="count" class="count">0</span>
+  </div>
+
+  <div class="toolbar">
+    <div class="lang">
+      <span class="note" id="langLabel">Язык:</span>
+      <button class="secondary" data-lang="ru">RU</button>
+      <button class="secondary" data-lang="uk">UA</button>
+      <button class="secondary" data-lang="en">EN</button>
+      <button class="secondary" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="item"><span class="dot">🍎</span><span id="lg_food">Еда</span></div>
+  <div class="item"><span class="dot">🛏️</span><span id="lg_shelter">Приют</span></div>
+  <div class="item"><span class="dot">🍼</span><span id="lg_infant">WIC/дети</span></div>
+  <div class="item"><span class="dot">🧥</span><span id="lg_clothes">Одежда</span></div>
+  <div class="item"><span class="dot">🤝</span><span id="lg_addiction">Зависимости</span></div>
+  <div class="item"><span class="dot">🏛️</span><span id="lg_idhs">IDHS</span></div>
+</div>
+
+<div class="linkbar">
+  <a href="https://abe.illinois.gov/abe/access/" target="_blank" rel="noopener">Подать на SNAP/WIC/Medicaid в ABE</a>
+  <a href="https://www.dhs.state.il.us/page.aspx?module=12&officetype=5" target="_blank" rel="noopener">IDHS офисы (поиск)</a>
+  <a href="tel:1833234634357">IDHS: 1-833-2-FIND-HELP</a>
+  <span class="note" id="tipsNote">Совет: клик по маркеру — часы/сайт/телефон</span>
+</div>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>
+  // === Настройка мультиязычия ===
+  const i18n = {
+    ru: {
+      brand: "Помощь рядом — Cook County",
+      searchPlaceholder: "Поиск адрес/индекс/название",
+      zipPlaceholder: "Индекс (ZIP)",
+      radius: "Радиус",
+      btnNear: "Рядом",
+      btnFind: "Найти",
+      api: "API",
+      offline: "Оффлайн-данные Cook",
+      tips: "Совет: клик по маркеру — часы/сайт/телефон",
+      legend: {food:"Еда", shelter:"Приют", infant:"WIC/дети", clothes:"Одежда", addiction:"Зависимости", idhs:"IDHS"},
+      types: {
+        food_bank: "Пункт еды",
+        shelter: "Приют/ночлег",
+        infant_nutrition: "WIC/детское питание",
+        free_clothes: "Бесплатная одежда",
+        addiction_recovery: "Поддержка зависимостей",
+        idhs: "IDHS офис"
+      },
+      helpText: {
+        food_bank: "Возьмите ID (если есть). В экстренной ситуации обслуживают и без документов.",
+        shelter: "Рекомендуется прийти рано вечером. Узнайте правила и наличие мест.",
+        infant_nutrition: "WIC: назначение по телефону. Проверьте документы/доход.",
+        free_clothes: "Проверьте часы приёма пожертвований/выдачи.",
+        addiction_recovery: "Позвоните заранее для intake. Бесплатные/скользящая шкала.",
+        idhs: "Через ABE можно подать на SNAP/WIC/Medicaid. На месте — помощь с анкетами."
+      }
+    },
+    uk: {
+      brand:"Допомога поруч — округ Кук",
+      searchPlaceholder:"Пошук адреса/індекс/назва",
+      zipPlaceholder:"Індекс (ZIP)",
+      radius:"Радіус",
+      btnNear:"Поруч",
+      btnFind:"Знайти",
+      api:"API",
+      offline:"Офлайн-дані Cook",
+      tips:"Порада: клік по маркеру — години/сайт/телефон",
+      legend:{food:"Їжа", shelter:"Притулок", infant:"WIC/діти", clothes:"Одяг", addiction:"Залежності", idhs:"IDHS"},
+      types:{food_bank:"Пункт їжі", shelter:"Притулок", infant_nutrition:"WIC/дитяче харчування", free_clothes:"Безкоштовний одяг", addiction_recovery:"Допомога від залежностей", idhs:"IDHS офіс"},
+      helpText:{food_bank:"Візьміть ID (за наявності). В екстрених випадках допоможуть без документів.", shelter:"Краще приходити ввечері раніше. Дізнайтесь про наявність місць.", infant_nutrition:"WIC: запишіться телефоном. Перевірте документи/дохід.", free_clothes:"Перевірте години прийому/видачі.", addiction_recovery:"Зателефонуйте для первинного прийому.", idhs:"Подайте на SNAP/WIC/Medicaid через ABE."}
+    },
+    en: {
+      brand:"Help Nearby — Cook County",
+      searchPlaceholder:"Search address/zip/name",
+      zipPlaceholder:"ZIP code",
+      radius:"Radius",
+      btnNear:"Near me",
+      btnFind:"Search",
+      api:"API",
+      offline:"Offline Cook data",
+      tips:"Tip: click marker for hours/site/phone",
+      legend:{food:"Food", shelter:"Shelter", infant:"WIC/Infant", clothes:"Clothes", addiction:"Addiction", idhs:"IDHS"},
+      types:{food_bank:"Food Bank", shelter:"Shelter", infant_nutrition:"Infant nutrition (WIC)", free_clothes:"Free clothing", addiction_recovery:"Addiction recovery", idhs:"IDHS office"},
+      helpText:{food_bank:"Bring ID if available. In emergencies, service may be provided without docs.", shelter:"Arrive early evening. Ask about bed availability and rules.", infant_nutrition:"WIC: call to schedule; check documents/income.", free_clothes:"Check donation/distribution hours.", addiction_recovery:"Call ahead for intake. Many are free or sliding-scale.", idhs:"Apply for SNAP/WIC/Medicaid via ABE; in-person help available."}
+    },
+    es: {
+      brand:"Ayuda Cerca — Condado de Cook",
+      searchPlaceholder:"Buscar dirección/código/nombre",
+      zipPlaceholder:"Código ZIP",
+      radius:"Radio",
+      btnNear:"Cerca",
+      btnFind:"Buscar",
+      api:"API",
+      offline:"Datos locales (Cook)",
+      tips:"Consejo: clic en marcador para horario/sitio/teléfono",
+      legend:{food:"Comida", shelter:"Refugio", infant:"WIC/Infantes", clothes:"Ropa", addiction:"Adicciones", idhs:"IDHS"},
+      types:{food_bank:"Banco de alimentos", shelter:"Refugio", infant_nutrition:"Nutrición infantil (WIC)", free_clothes:"Ropa gratis", addiction_recovery:"Tratamiento adicciones", idhs:"Oficina IDHS"},
+      helpText:{food_bank:"Trae ID si tienes. En emergencias atienden sin documentos.", shelter:"Llega temprano por la tarde. Consulta camas y reglas.", infant_nutrition:"WIC: llama para cita; revisa documentos/ingresos.", free_clothes:"Revisa horarios de entrega.", addiction_recovery:"Llama antes para admisión (intake).", idhs:"Solicita SNAP/WIC/Medicaid en ABE; ayuda en persona disponible."}
+    }
+  };
+  let LANG = localStorage.getItem("HELP_LANG") || "ru";
+
+  function applyLang() {
+    const t = i18n[LANG];
+    document.getElementById("brand").innerText = t.brand;
+    document.getElementById("q").placeholder = t.searchPlaceholder;
+    document.getElementById("zip").placeholder = t.zipPlaceholder;
+    document.getElementById("radiusLabel").innerText = t.radius;
+    document.getElementById("nearMe").innerText = t.btnNear;
+    document.getElementById("searchBtn").innerText = t.btnFind;
+    document.getElementById("useApiLabel").innerText = t.api;
+    document.getElementById("useOfflineLabel").innerText = t.offline;
+    document.getElementById("tipsNote").innerText = t.tips;
+    document.getElementById("lg_food").innerText = t.legend.food;
+    document.getElementById("lg_shelter").innerText = t.legend.shelter;
+    document.getElementById("lg_infant").innerText = t.legend.infant;
+    document.getElementById("lg_clothes").innerText = t.legend.clothes;
+    document.getElementById("lg_addiction").innerText = t.legend.addiction;
+    document.getElementById("lg_idhs").innerText = t.legend.idhs;
+  }
+  document.querySelectorAll('[data-lang]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      LANG = btn.dataset.lang; localStorage.setItem("HELP_LANG", LANG); applyLang();
+      runSearch(true);
+    });
+  });
+  applyLang();
+
+  // === Карта и иконки ===
+  const API_BASE = localStorage.getItem("API_BASE") || "http://localhost:8000";
+  const map = L.map('map').setView([41.881832, -87.623177], 12);
+ const darkMatter = L.tileLayer(
+  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  {
+    attribution: '&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }
+).addTo(map);
+
+  const clusters = L.markerClusterGroup({ showCoverageOnHover:false, maxClusterRadius: 60 });
+  map.addLayer(clusters);
+
+  function iconFor(type) {
+    const emoji = { food_bank:"🍎", shelter:"🛏️", infant_nutrition:"🍼", free_clothes:"🧥", addiction_recovery:"🤝", idhs:"🏛️" }[type] || "📍";
+    return L.divIcon({ className:"marker", html:`<div style="font-size:22px">${emoji}</div>`, iconSize:[22,22], iconAnchor:[11,22], popupAnchor:[0,-22] });
+  }
+
+  // === Офлайн-набор по Cook County (координаты и контакты) ===
+  // Источники подтверждений см. в описании ответа.
+  const OFFLINE_COOK = [
+    // --- FOOD BANKS / PANTRIES ---
+    { id:"gcfdb", type:"food_bank", name:"Greater Chicago Food Depository (HQ & referrals)", latitude:41.81736, longitude:-87.72711, address:"4100 W Ann Lurie Pl", city:"Chicago", state:"IL", zip_code:"60632", phone:"773-247-3663", website:"https://www.chicagosfoodbank.org", hours:"Mon–Fri 8:30–17:00", languages:["EN","ES"], description:"Инфо/направления к ближайшим pantry." },
+    { id:"nh_sheridan", type:"food_bank", name:"Nourishing Hope — Sheridan Market", latitude:41.9539, longitude:-87.6540, address:"3945 N Sheridan Rd", city:"Chicago", state:"IL", zip_code:"60613", phone:"773-525-1777", website:"https://www.nourishinghopechi.org/get-food/sheridan-market/", hours:"см. сайт", languages:["EN","ES"], description:"Пищевой рынок/соц.услуги." },
+
+    // --- SHELTERS / OVERNIGHT ---
+    { id:"pgm", type:"shelter", name:"Pacific Garden Mission (24/7)", latitude:41.861999, longitude:-87.640233, address:"1458 S Canal St", city:"Chicago", state:"IL", zip_code:"60607", phone:"312-492-9410", website:"https://www.pgm.org/", hours:"Круглосуточно", languages:["EN","ES"], description:"Приют, питание, поддержка семьям, мужчинам и женщинам." },
+    { id:"booth", type:"shelter", name:"Salvation Army — Evangeline Booth Lodge (семьи)", latitude:41.96926, longitude:-87.65042, address:"800 W Lawrence Ave", city:"Chicago", state:"IL", zip_code:"60640", phone:"773-275-9383", website:"https://centralusa.salvationarmy.org/northcentralillinois/evangeline-booth-lodge/", hours:"24/7", languages:["EN","ES"], description:"Кризисное размещение семей." },
+    { id:"garfield_center", type:"shelter", name:"DFSS Garfield Community Service Center (координация приютов)", latitude:41.88095, longitude:-87.70552, address:"10 S Kedzie Ave", city:"Chicago", state:"IL", zip_code:"60612", phone:"312-746-5400", website:"https://www.chicago.gov/.../community_servicecenterlocations.html", hours:"Mon–Fri 9–17", languages:["EN","ES"], description:"Точка входа/кулер, перенаправление в приюты." },
+
+    // --- WIC / INFANT NUTRITION ---
+    { id:"wic_ceda_lawrence", type:"infant_nutrition", name:"CEDA WIC — Lawrence", latitude:41.9690, longitude:-87.7010, address:"2754 W Lawrence Ave", city:"Chicago", state:"IL", zip_code:"60625", phone:"773-878-0578", website:"https://www.cedaorg.net", hours:"Mon–Fri 8–16:30", languages:["EN","ES"], description:"WIC для беременных/детей." },
+
+    // --- FREE CLOTHES / CHILDREN ---
+    { id:"c2c", type:"free_clothes", name:"Cradles to Crayons — Giving Factory (через партнеров)", latitude:41.9467, longitude:-87.6924, address:"2500 W Bradley Pl", city:"Chicago", state:"IL", zip_code:"60618", phone:"", website:"https://www.cradlestocrayons.org/chicago/new-giving-factory/", hours:"см. сайт", languages:["EN"], description:"Одежда/товары для детей через партнерские организации." },
+
+    // --- ADDICTION RECOVERY (координаты ориентировочные через адрес) ---
+    { id:"night_ministry", type:"addiction_recovery", name:"The Night Ministry — Health Outreach (направления)", latitude:41.9139, longitude:-87.6683, address:"1735 N Ashland Ave, Suite 2000", city:"Chicago", state:"IL", zip_code:"60622", phone:"773-784-9000", website:"https://www.thenightministry.org/contact-tnm", hours:"см. сайт", languages:["EN","ES"], description:"Мобильная помощь/направления к лечению, youth shelter The Crib." },
+
+    // --- IDHS OFFICES (FCRC) ---
+    { id:"idhs_southloop", type:"idhs", name:"IDHS FCRC — South Loop", latitude:41.8676, longitude:-87.6258, address:"1112 S Wabash Ave", city:"Chicago", state:"IL", zip_code:"60605", phone:"312-793-7500", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"SNAP/WIC/Medicaid — запись через ABE." },
+    { id:"idhs_northside", type:"idhs", name:"IDHS FCRC — Northside", latitude:41.99386, longitude:-87.75026, address:"6200 N Hiawatha Ave (5 этаж)", city:"Chicago", state:"IL", zip_code:"60646", phone:"773-907-4100", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"Общий приём, поддержка." },
+    { id:"idhs_northwest", type:"idhs", name:"IDHS FCRC — Northwest", latitude:41.89524, longitude:-87.72875, address:"4105 W Chicago Ave", city:"Chicago", state:"IL", zip_code:"60651", phone:"773-265-7000", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"Общий приём, поддержка." },
+    { id:"idhs_woodlawn", type:"idhs", name:"IDHS FCRC — Woodlawn", latitude:41.7807, longitude:-87.6036, address:"915 E 63rd St", city:"Chicago", state:"IL", zip_code:"60637", phone:"773-753-2406", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"Общий приём, поддержка." }
+  ];
+
+  // === Загрузка из API ===
+  async function fetchFromApi(params={}) {
+    const url = new URL(API_BASE + "/resources");
+    Object.entries(params).forEach(([k,v]) => {
+      if (v !== undefined && v !== null && v !== "" && v !== "all") url.searchParams.set(k, v);
+    });
+    const res = await fetch(url.toString());
+    if (!res.ok) throw new Error("API недоступно");
+    return res.json();
+  }
+
+  function popupHtml(r) {
+    const t = i18n[LANG];
+    const typeLabel = t.types[r.type] || r.type;
+    const langs = (r.languages || []).join(", ");
+    const help = t.helpText[r.type] || "";
+    return `
+      <strong>${r.name}</strong><br/>
+      <em>${typeLabel}</em><br/>
+      ${r.address || ""}${r.city?`, ${r.city}`:""}${r.state?`, ${r.state}`:""} ${r.zip_code || ""}<br/>
+      ${r.phone ? `☎️ <a href="tel:${r.phone.replace(/[^0-9+]/g,'')}">${r.phone}</a><br/>` : "" }
+      ${r.website ? `<a href="${r.website}" target="_blank" rel="noopener">🌐 Website</a><br/>` : "" }
+      ${r.hours ? `⏰ ${r.hours}<br/>` : "" }
+      ${r.description ? `<small>${r.description}</small><br/>` : "" }
+      ${langs ? `🌐 ${langs}<br/>` : ""}
+      ${help ? `<div class="note">${help}</div>` : ""}
+    `;
+  }
+
+  function renderResources(items) {
+    clusters.clearLayers();
+    items.forEach(r => {
+      if (typeof r.latitude !== "number" || typeof r.longitude !== "number") return;
+      const m = L.marker([r.latitude, r.longitude], { icon: iconFor(r.type) });
+      m.bindPopup(popupHtml(r));
+      clusters.addLayer(m);
+    });
+    if (items.length) {
+      const bounds = L.latLngBounds(items.filter(r=>r.latitude && r.longitude).map(r => [r.latitude, r.longitude]));
+      if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
+    }
+    document.getElementById("count").textContent = items.length;
+  }
+
+  async function runSearch(useCenter=false) {
+    const params = {};
+    const typeVal = document.getElementById("type").value;
+    const q = document.getElementById("q").value.trim();
+    const zip = document.getElementById("zip").value.trim();
+    const radius = document.getElementById("radius_km").value;
+    const useApi = document.getElementById("useApi").checked;
+    const useOffline = document.getElementById("useOffline").checked;
+
+    if (typeVal !== "all") params.type = typeVal;
+    if (q) params.q = q;
+    if (zip) params.zip_code = zip;
+
+    if (useCenter) {
+      const c = map.getCenter();
+      params.lat = c.lat.toFixed(6);
+      params.lng = c.lng.toFixed(6);
+      params.radius_km = radius;
+    }
+
+    let items = [];
+    if (useApi) {
+      try { items = await fetchFromApi(params); } catch(e) { console.warn("API error:", e); }
+    }
+    if (useOffline) {
+      const filtered = OFFLINE_COOK.filter(r => {
+        const typeOk = (typeVal === "all") || (r.type === typeVal);
+        const qOk = q ? ( (r.name||"").toLowerCase().includes(q.toLowerCase()) || (r.address||"").toLowerCase().includes(q.toLowerCase()) ) : true;
+        const zipOk = zip ? (r.zip_code === zip) : true;
+        return typeOk && qOk && zipOk;
+      });
+      // если выбран радиус по центру карты
+      if (useCenter) {
+        const c = map.getCenter();
+        const R = Number(radius) || 25;
+        items = items.concat(filtered.filter(r => {
+          const d = haversineKm(c.lat, c.lng, r.latitude, r.longitude);
+          return d <= R;
+        }));
+      } else {
+        items = items.concat(filtered);
+      }
+    }
+    // убрать дубликаты по id/name+addr
+    const uniq = {};
+    const merged = [];
+    for (const r of items) {
+      const key = r.id || `${r.name}|${r.address}`;
+      if (!uniq[key]) { uniq[key]=1; merged.push(r); }
+    }
+    renderResources(merged);
+  }
+
+  // гео-расстояние
+  function haversineKm(lat1, lon1, lat2, lon2) {
+    const toRad = x => x*Math.PI/180;
+    const R = 6371;
+    const dLat = toRad(lat2-lat1), dLon = toRad(lon2-lon1);
+    const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  document.getElementById("searchBtn").addEventListener("click", () => runSearch(true));
+  document.getElementById("nearMe").addEventListener("click", () => {
+    if (!navigator.geolocation) return runSearch(true);
+    navigator.geolocation.getCurrentPosition(
+      pos => { map.setView([pos.coords.latitude, pos.coords.longitude], 12); runSearch(true); },
+      () => runSearch(true)
+    );
+  });
+
+  // первая загрузка
+  runSearch(true);
+</script>
+</body>
+</html>

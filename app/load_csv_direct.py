@@ -1,51 +1,55 @@
-# load_csv_direct.py
+# app/load_csv_direct.py
 import csv, sqlite3
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-DB_PATH = ROOT / "data" / "data.db"
-CSV_PATH = ROOT / "csv" / "grants_live.csv"
+DB_PATH = Path(__file__).resolve().parents[1] / "data" / "data.db"
+CSV_PATH = Path("csv") / "grants.csv"   # поправь путь, если у тебя другой
 
-# гарантируем каталог для БД
-DB_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-if not CSV_PATH.exists():
-    raise FileNotFoundError(f"CSV not found: {CSV_PATH}")
-
-conn = sqlite3.connect(DB_PATH)
-cur = conn.cursor()
-
-cur.execute("""
-CREATE TABLE IF NOT EXISTS grants (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT, description TEXT, link TEXT,
-  location TEXT, deadline TEXT, tags TEXT
-)
-""")
-
-# по желанию очищаем
-cur.execute("DELETE FROM grants")
-
-rows = []
-with open(CSV_PATH, newline="", encoding="utf-8-sig") as f:
-    r = csv.DictReader(f)
-    # безопасно читаем значения (без KeyError)
-    for x in r:
-        rows.append((
-            (x.get("title") or "").strip(),
-            (x.get("description") or "").strip(),
-            (x.get("link") or "").strip(),
-            (x.get("location") or "").strip(),
-            (x.get("deadline") or "").strip(),
-            (x.get("tags") or "").strip(),
-        ))
-
-if rows:
-    cur.executemany(
-        "INSERT INTO grants(title,description,link,location,deadline,tags) VALUES (?,?,?,?,?,?)",
-        rows,
+def ensure_table():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS grants (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        summary TEXT,
+        status TEXT CHECK(status IN ('draft','published')) NOT NULL DEFAULT 'draft'
     )
+    """)
+    conn.commit()
+    conn.close()
 
-conn.commit()
-conn.close()
-print(f"Loaded {len(rows)} rows into grants. DB: {DB_PATH}")
+def load_csv():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    rows = []
+    with open(CSV_PATH, newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            title = (r.get('title') or r.get('name') or '').strip()
+            summary = (r.get('description') or r.get('summary') or '').strip()
+            status = (r.get('status') or 'published').strip()
+            if not title:
+                # пропускаем пустые строки без title
+                continue
+            rows.append((title, summary, status))
+
+    if rows:
+        cur.executemany(
+            "INSERT INTO grants(title, summary, status) VALUES (?,?,?)",
+            rows
+        )
+        conn.commit()
+        print(f"Inserted {len(rows)} rows into grants")
+    else:
+        print("CSV seems empty or has no usable rows")
+
+    conn.close()
+
+if __name__ == "__main__":
+    print("[data] Ensuring schema…")
+    ensure_table()
+    print("[data] Loading CSV…")
+    load_csv()
+    print("[data] Done.")

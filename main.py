@@ -1,15 +1,13 @@
-﻿# app/main.py
 from fastapi import FastAPI
-from app.routers.content import make_content_router
+from fastapi.middleware.cors import CORSMiddleware
+from app.start_v2 import mount_static_and_routes
 
-app = FastAPI(title="edu-grants API")
+app = FastAPI(title='Edu Grants API', version='0.1.0')
 
-for name in ["grants", "courses", "scholarships", "nonprofits"]:
-    app.include_router(make_content_router(name))
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'], allow_credentials=True,
+    allow_methods=['*'], allow_headers=['*'],
+)
 
-@app.get("/")
-def root():
-    return {"message": "Hello from edu-grants"}
-
-from app.routers.v2_grants import router as v2_grants_router
-app.include_router(v2_grants_router)
+mount_static_and_routes(app)
