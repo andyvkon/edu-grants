@@ -47,7 +47,7 @@ def create_grant(data: dict, _ = Depends(require_admin)): # Добавил за�
     cur.execute(
         '''INSERT INTO grants (title, summary, status, lat, lng, category, working_hours, url, address) 
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
-        (data['title'], data['summary'], 'published', data['lat'], data['lng'], 
+        (data['title'], data['summary'], data.get('status', 'draft'), data['lat'], data['lng'],
          data['category'], data.get('working_hours'), data.get('url'), data.get('address'))
     )
     new_id = cur.lastrowid

@@ -1,42 +1,55 @@
 <!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Админка — Grants</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 text-gray-900">
-  <div class="max-w-6xl mx-auto p-6 space-y-6">
-    <header class="flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">Админка</h1>
-      <a href="/web/index.html" class="text-sm underline">Публичная</a>
-    </header>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Админка — Grants</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <div class="max-w-6xl mx-auto p-6 space-y-6">
+      <header class="flex items-center justify-between">
+        <h1 class="text-2xl font-semibold">Админка</h1>
+        <a href="/web/index.html" class="text-sm underline">Публичная</a>
+      </header>
 
-    <div class="bg-white rounded-xl shadow p-4 space-y-3">
-      <label class="block">
-        <span class="text-sm">X-Admin-Token</span>
-        <input id="token" class="border rounded px-3 py-2 w-full" placeholder="dev-admin" />
-      </label>
-      <div class="flex gap-2">
-        <button id="loadDrafts" class="px-4 py-2 rounded bg-black text-white">Загрузить черновики</button>
+      <div class="bg-white rounded-xl shadow p-4 space-y-3">
+        <label class="block">
+          <span class="text-sm">X-Admin-Token</span>
+          <input
+            id="token"
+            class="border rounded px-3 py-2 w-full"
+            placeholder="dev-admin"
+          />
+        </label>
+        <div class="flex gap-2">
+          <button id="loadDrafts" class="px-4 py-2 rounded bg-black text-white">
+            Загрузить черновики
+          </button>
+        </div>
+        <div id="list"></div>
       </div>
-      <div id="list"></div>
     </div>
-  </div>
 
-  <script src="/web/app.js"></script>
-  <script>
-  function token() { return document.getElementById('token').value || 'dev-admin'; }
-  async function loadDrafts() {
-    try{
-      const items = await api('/v2/grants/?include_status=draft');
-      const box = document.getElementById('list');
-      if (!items.length) { box.innerHTML = '<div class="text-gray-500">Черновиков нет</div>'; return; }
-      box.innerHTML = items.map(it => `
+    <script src="/web/app.js"></script>
+    <script>
+      function token() {
+        return document.getElementById("token").value || "dev-admin";
+      }
+      async function loadDrafts() {
+        try {
+          const items = await api("/api/v2/grants/?include_status=draft");
+          const box = document.getElementById("list");
+          if (!items.length) {
+            box.innerHTML = '<div class="text-gray-500">Черновиков нет</div>';
+            return;
+          }
+          box.innerHTML = items
+            .map(
+              (it) => `
         <div class="py-3 border-b last:border-0 flex items-center justify-between gap-4">
           <div class="flex-1">
-            <div class="font-medium">${escapeHtml(it.title || 'без названия')}</div>
+            <div class="font-medium">${escapeHtml(it.title || "без названия")}</div>
             <div class="text-xs text-gray-500">id=${it.id}</div>
           </div>
           <div class="flex gap-2">
@@ -44,12 +57,30 @@
             <button class="text-sm underline" onclick="unpublish(${it.id})">В черновик</button>
           </div>
         </div>
-      `).join('');
-    } catch(e){ alert(e.message); }
-  }
-  async function publish(id){ await api('/v2/grants/'+id+'/publish', {method:'PATCH', headers:{'X-Admin-Token': token()}}); loadDrafts(); }
-  async function unpublish(id){ await api('/v2/grants/'+id+'/unpublish', {method:'PATCH', headers:{'X-Admin-Token': token()}}); loadDrafts(); }
-  document.getElementById('loadDrafts').addEventListener('click', loadDrafts);
-  </script>
-</body>
+      `,
+            )
+            .join("");
+        } catch (e) {
+          alert(e.message);
+        }
+      }
+      async function publish(id) {
+        await api("/api/v2/grants/" + id + "/publish", {
+          method: "PATCH",
+          headers: { "X-Admin-Token": token() },
+        });
+        loadDrafts();
+      }
+      async function unpublish(id) {
+        await api("/api/v2/grants/" + id + "/unpublish", {
+          method: "PATCH",
+          headers: { "X-Admin-Token": token() },
+        });
+        loadDrafts();
+      }
+      document
+        .getElementById("loadDrafts")
+        .addEventListener("click", loadDrafts);
+    </script>
+  </body>
 </html>
