@@ -1,0 +1,14 @@
+[
+  {
+    "id": "wic_1",
+    "type": "wic",
+    "name": "Sample WIC Clinic",
+    "latitude": 41.88,
+    "longitude": -87.63,
+    "address": "123 Example St, Chicago, IL",
+    "phone": "312-555-1234",
+    "website": null,
+    "hours": null,
+    "description": "WIC program location"
+  }
+]

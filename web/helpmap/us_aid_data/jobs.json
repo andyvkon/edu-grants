@@ -1,0 +1,14 @@
+[
+  {
+    "id": "job_1",
+    "type": "jobs",
+    "name": "Sample Job Center",
+    "latitude": 41.85,
+    "longitude": -87.65,
+    "address": "1000 Jobs St, Chicago, IL",
+    "phone": "312-555-1111",
+    "website": "https://www.careeronestop.org/",
+    "hours": null,
+    "description": "American Job Center"
+  }
+]

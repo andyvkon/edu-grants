@@ -1,0 +1,14 @@
+[
+  {
+    "id": "legal_1",
+    "type": "legal",
+    "name": "Sample Legal Aid",
+    "latitude": 41.89,
+    "longitude": -87.64,
+    "address": "200 Law St, Chicago, IL",
+    "phone": "312-555-2222",
+    "website": "https://www.lsc.gov/",
+    "hours": null,
+    "description": "Free legal assistance"
+  }
+]

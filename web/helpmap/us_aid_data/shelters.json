@@ -1,0 +1,14 @@
+[
+  {
+    "id": "shelter_1",
+    "type": "shelter",
+    "name": "Sample Shelter",
+    "latitude": 41.87,
+    "longitude": -87.62,
+    "address": "789 Shelter Rd, Chicago, IL",
+    "phone": "312-555-8765",
+    "website": null,
+    "hours": "24/7",
+    "description": "Emergency overnight shelter"
+  }
+]

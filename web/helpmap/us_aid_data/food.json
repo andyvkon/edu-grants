@@ -1,0 +1,14 @@
+[
+  {
+    "id": "food_1",
+    "type": "food_bank",
+    "name": "Sample Food Pantry",
+    "latitude": 41.9,
+    "longitude": -87.65,
+    "address": "456 Example Ave, Chicago, IL",
+    "phone": "312-555-5678",
+    "website": null,
+    "hours": null,
+    "description": "Emergency food assistance"
+  }
+]

@@ -1,373 +1,586 @@
 <!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8"/>
-  <title>Карта помощи — Cook County</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <style>
-    :root { --brand:#0c8; --muted:#666; }
-    *{ box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color:#222;}
-    header { padding:10px 12px; border-bottom:1px solid #eee; display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-    header > * { font-size:14px; }
-    #brand { font-weight:700; font-size:16px; margin-right:4px;}
-    #map { height: calc(100vh - 120px); width: 100%; }
-    .panel { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-    input[type="text"], select { padding: 8px; border:1px solid #ddd; border-radius:8px; min-width: 150px;}
-    button { padding: 8px 12px; border:1px solid var(--brand); border-radius:8px; background:var(--brand); color:#fff; cursor:pointer; }
-    button.secondary { background:#fff; color:var(--brand); }
-    .chip { padding: 4px 8px; border:1px solid #ddd; border-radius:999px; display:inline-flex; align-items:center; gap:6px; background:#fafafa; }
-    .count { font-weight:600; }
-    .lang { display:flex; gap:6px; align-items:center; }
-    .legend { display:flex; gap:8px; flex-wrap:wrap; padding:8px 12px; border-bottom:1px solid #eee; }
-    .legend .item { display:flex; gap:6px; align-items:center; color:#333; font-size:13px; }
-    .legend .dot { font-size:18px; }
-    .toolbar { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-left:auto; }
-    .note { color:var(--muted); font-size:12px; }
-    .toggles { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-    .linkbar { padding:6px 12px; display:flex; gap:10px; flex-wrap:wrap; border-bottom:1px solid #eee; background:#fcfcfc; }
-    .linkbar a { color:#0066cc; text-decoration:none; font-size:13px; }
-    .linkbar a:hover { text-decoration:underline; }
-    @media (max-width:640px){
-      #map{ height: calc(100vh - 160px); }
-      header{ gap:6px; }
-    }
-  </style>
-</head>
-<body>
-<header>
-  <strong id="brand">Помощь рядом — Cook County</strong>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Community Aid Map 2026</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
 
-  <div class="panel">
-    <input id="q" type="text" placeholder="Поиск адрес/индекс/название"/>
-    <input id="zip" type="text" placeholder="Индекс (ZIP)"/>
-    <select id="type">
-      <option value="all">Все типы</option>
-      <option value="food_bank">Еда (Food bank)</option>
-      <option value="shelter">Приют/ночлег</option>
-      <option value="infant_nutrition">Питание для младенцев (WIC)</option>
-      <option value="free_clothes">Бесплатная одежда</option>
-      <option value="addiction_recovery">Лечение зависимостей</option>
-      <option value="idhs">IDHS офис</option>
-    </select>
-    <span class="chip">
-      <label for="radius_km" id="radiusLabel">Радиус</label>
-      <select id="radius_km">
-        <option value="10">10км</option>
-        <option value="25" selected>25км</option>
-        <option value="50">50км</option>
-      </select>
-    </span>
-    <div class="toggles">
-      <label class="chip"><input id="useApi" type="checkbox" checked> <span id="useApiLabel">API</span></label>
-      <label class="chip"><input id="useOffline" type="checkbox" checked> <span id="useOfflineLabel">Оффлайн-данные Cook</span></label>
-    </div>
-    <button id="nearMe">Рядом</button>
-    <button id="searchBtn">Найти</button>
-    <span id="count" class="count">0</span>
-  </div>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+    />
 
-  <div class="toolbar">
-    <div class="lang">
-      <span class="note" id="langLabel">Язык:</span>
-      <button class="secondary" data-lang="ru">RU</button>
-      <button class="secondary" data-lang="uk">UA</button>
-      <button class="secondary" data-lang="en">EN</button>
-      <button class="secondary" data-lang="es">ES</button>
-    </div>
-  </div>
-</header>
-
-<div class="legend">
-  <div class="item"><span class="dot">🍎</span><span id="lg_food">Еда</span></div>
-  <div class="item"><span class="dot">🛏️</span><span id="lg_shelter">Приют</span></div>
-  <div class="item"><span class="dot">🍼</span><span id="lg_infant">WIC/дети</span></div>
-  <div class="item"><span class="dot">🧥</span><span id="lg_clothes">Одежда</span></div>
-  <div class="item"><span class="dot">🤝</span><span id="lg_addiction">Зависимости</span></div>
-  <div class="item"><span class="dot">🏛️</span><span id="lg_idhs">IDHS</span></div>
-</div>
-
-<div class="linkbar">
-  <a href="https://abe.illinois.gov/abe/access/" target="_blank" rel="noopener">Подать на SNAP/WIC/Medicaid в ABE</a>
-  <a href="https://www.dhs.state.il.us/page.aspx?module=12&officetype=5" target="_blank" rel="noopener">IDHS офисы (поиск)</a>
-  <a href="tel:1833234634357">IDHS: 1-833-2-FIND-HELP</a>
-  <span class="note" id="tipsNote">Совет: клик по маркеру — часы/сайт/телефон</span>
-</div>
-
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-<script>
-  // === Настройка мультиязычия ===
-  const i18n = {
-    ru: {
-      brand: "Помощь рядом — Cook County",
-      searchPlaceholder: "Поиск адрес/индекс/название",
-      zipPlaceholder: "Индекс (ZIP)",
-      radius: "Радиус",
-      btnNear: "Рядом",
-      btnFind: "Найти",
-      api: "API",
-      offline: "Оффлайн-данные Cook",
-      tips: "Совет: клик по маркеру — часы/сайт/телефон",
-      legend: {food:"Еда", shelter:"Приют", infant:"WIC/дети", clothes:"Одежда", addiction:"Зависимости", idhs:"IDHS"},
-      types: {
-        food_bank: "Пункт еды",
-        shelter: "Приют/ночлег",
-        infant_nutrition: "WIC/детское питание",
-        free_clothes: "Бесплатная одежда",
-        addiction_recovery: "Поддержка зависимостей",
-        idhs: "IDHS офис"
-      },
-      helpText: {
-        food_bank: "Возьмите ID (если есть). В экстренной ситуации обслуживают и без документов.",
-        shelter: "Рекомендуется прийти рано вечером. Узнайте правила и наличие мест.",
-        infant_nutrition: "WIC: назначение по телефону. Проверьте документы/доход.",
-        free_clothes: "Проверьте часы приёма пожертвований/выдачи.",
-        addiction_recovery: "Позвоните заранее для intake. Бесплатные/скользящая шкала.",
-        idhs: "Через ABE можно подать на SNAP/WIC/Medicaid. На месте — помощь с анкетами."
+    <style>
+      :root {
+        --glass: rgba(15, 18, 28, 0.8);
+        --glass-strong: rgba(10, 12, 20, 0.95);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --accent: #4f8cff;
+        --accent-glow: rgba(79, 140, 255, 0.4);
+        --text: #ffffff;
+        --muted: #a0a0b0;
+        --bg-dark: #050508;
       }
-    },
-    uk: {
-      brand:"Допомога поруч — округ Кук",
-      searchPlaceholder:"Пошук адреса/індекс/назва",
-      zipPlaceholder:"Індекс (ZIP)",
-      radius:"Радіус",
-      btnNear:"Поруч",
-      btnFind:"Знайти",
-      api:"API",
-      offline:"Офлайн-дані Cook",
-      tips:"Порада: клік по маркеру — години/сайт/телефон",
-      legend:{food:"Їжа", shelter:"Притулок", infant:"WIC/діти", clothes:"Одяг", addiction:"Залежності", idhs:"IDHS"},
-      types:{food_bank:"Пункт їжі", shelter:"Притулок", infant_nutrition:"WIC/дитяче харчування", free_clothes:"Безкоштовний одяг", addiction_recovery:"Допомога від залежностей", idhs:"IDHS офіс"},
-      helpText:{food_bank:"Візьміть ID (за наявності). В екстрених випадках допоможуть без документів.", shelter:"Краще приходити ввечері раніше. Дізнайтесь про наявність місць.", infant_nutrition:"WIC: запишіться телефоном. Перевірте документи/дохід.", free_clothes:"Перевірте години прийому/видачі.", addiction_recovery:"Зателефонуйте для первинного прийому.", idhs:"Подайте на SNAP/WIC/Medicaid через ABE."}
-    },
-    en: {
-      brand:"Help Nearby — Cook County",
-      searchPlaceholder:"Search address/zip/name",
-      zipPlaceholder:"ZIP code",
-      radius:"Radius",
-      btnNear:"Near me",
-      btnFind:"Search",
-      api:"API",
-      offline:"Offline Cook data",
-      tips:"Tip: click marker for hours/site/phone",
-      legend:{food:"Food", shelter:"Shelter", infant:"WIC/Infant", clothes:"Clothes", addiction:"Addiction", idhs:"IDHS"},
-      types:{food_bank:"Food Bank", shelter:"Shelter", infant_nutrition:"Infant nutrition (WIC)", free_clothes:"Free clothing", addiction_recovery:"Addiction recovery", idhs:"IDHS office"},
-      helpText:{food_bank:"Bring ID if available. In emergencies, service may be provided without docs.", shelter:"Arrive early evening. Ask about bed availability and rules.", infant_nutrition:"WIC: call to schedule; check documents/income.", free_clothes:"Check donation/distribution hours.", addiction_recovery:"Call ahead for intake. Many are free or sliding-scale.", idhs:"Apply for SNAP/WIC/Medicaid via ABE; in-person help available."}
-    },
-    es: {
-      brand:"Ayuda Cerca — Condado de Cook",
-      searchPlaceholder:"Buscar dirección/código/nombre",
-      zipPlaceholder:"Código ZIP",
-      radius:"Radio",
-      btnNear:"Cerca",
-      btnFind:"Buscar",
-      api:"API",
-      offline:"Datos locales (Cook)",
-      tips:"Consejo: clic en marcador para horario/sitio/teléfono",
-      legend:{food:"Comida", shelter:"Refugio", infant:"WIC/Infantes", clothes:"Ropa", addiction:"Adicciones", idhs:"IDHS"},
-      types:{food_bank:"Banco de alimentos", shelter:"Refugio", infant_nutrition:"Nutrición infantil (WIC)", free_clothes:"Ropa gratis", addiction_recovery:"Tratamiento adicciones", idhs:"Oficina IDHS"},
-      helpText:{food_bank:"Trae ID si tienes. En emergencias atienden sin documentos.", shelter:"Llega temprano por la tarde. Consulta camas y reglas.", infant_nutrition:"WIC: llama para cita; revisa documentos/ingresos.", free_clothes:"Revisa horarios de entrega.", addiction_recovery:"Llama antes para admisión (intake).", idhs:"Solicita SNAP/WIC/Medicaid en ABE; ayuda en persona disponible."}
-    }
-  };
-  let LANG = localStorage.getItem("HELP_LANG") || "ru";
 
-  function applyLang() {
-    const t = i18n[LANG];
-    document.getElementById("brand").innerText = t.brand;
-    document.getElementById("q").placeholder = t.searchPlaceholder;
-    document.getElementById("zip").placeholder = t.zipPlaceholder;
-    document.getElementById("radiusLabel").innerText = t.radius;
-    document.getElementById("nearMe").innerText = t.btnNear;
-    document.getElementById("searchBtn").innerText = t.btnFind;
-    document.getElementById("useApiLabel").innerText = t.api;
-    document.getElementById("useOfflineLabel").innerText = t.offline;
-    document.getElementById("tipsNote").innerText = t.tips;
-    document.getElementById("lg_food").innerText = t.legend.food;
-    document.getElementById("lg_shelter").innerText = t.legend.shelter;
-    document.getElementById("lg_infant").innerText = t.legend.infant;
-    document.getElementById("lg_clothes").innerText = t.legend.clothes;
-    document.getElementById("lg_addiction").innerText = t.legend.addiction;
-    document.getElementById("lg_idhs").innerText = t.legend.idhs;
-  }
-  document.querySelectorAll('[data-lang]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      LANG = btn.dataset.lang; localStorage.setItem("HELP_LANG", LANG); applyLang();
-      runSearch(true);
-    });
-  });
-  applyLang();
-
-  // === Карта и иконки ===
-  const API_BASE = localStorage.getItem("API_BASE") || "http://localhost:8000";
-  const map = L.map('map').setView([41.881832, -87.623177], 12);
- const darkMatter = L.tileLayer(
-  'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-  {
-    attribution: '&copy; OpenStreetMap contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 19
-  }
-).addTo(map);
-
-  const clusters = L.markerClusterGroup({ showCoverageOnHover:false, maxClusterRadius: 60 });
-  map.addLayer(clusters);
-
-  function iconFor(type) {
-    const emoji = { food_bank:"🍎", shelter:"🛏️", infant_nutrition:"🍼", free_clothes:"🧥", addiction_recovery:"🤝", idhs:"🏛️" }[type] || "📍";
-    return L.divIcon({ className:"marker", html:`<div style="font-size:22px">${emoji}</div>`, iconSize:[22,22], iconAnchor:[11,22], popupAnchor:[0,-22] });
-  }
-
-  // === Офлайн-набор по Cook County (координаты и контакты) ===
-  // Источники подтверждений см. в описании ответа.
-  const OFFLINE_COOK = [
-    // --- FOOD BANKS / PANTRIES ---
-    { id:"gcfdb", type:"food_bank", name:"Greater Chicago Food Depository (HQ & referrals)", latitude:41.81736, longitude:-87.72711, address:"4100 W Ann Lurie Pl", city:"Chicago", state:"IL", zip_code:"60632", phone:"773-247-3663", website:"https://www.chicagosfoodbank.org", hours:"Mon–Fri 8:30–17:00", languages:["EN","ES"], description:"Инфо/направления к ближайшим pantry." },
-    { id:"nh_sheridan", type:"food_bank", name:"Nourishing Hope — Sheridan Market", latitude:41.9539, longitude:-87.6540, address:"3945 N Sheridan Rd", city:"Chicago", state:"IL", zip_code:"60613", phone:"773-525-1777", website:"https://www.nourishinghopechi.org/get-food/sheridan-market/", hours:"см. сайт", languages:["EN","ES"], description:"Пищевой рынок/соц.услуги." },
-
-    // --- SHELTERS / OVERNIGHT ---
-    { id:"pgm", type:"shelter", name:"Pacific Garden Mission (24/7)", latitude:41.861999, longitude:-87.640233, address:"1458 S Canal St", city:"Chicago", state:"IL", zip_code:"60607", phone:"312-492-9410", website:"https://www.pgm.org/", hours:"Круглосуточно", languages:["EN","ES"], description:"Приют, питание, поддержка семьям, мужчинам и женщинам." },
-    { id:"booth", type:"shelter", name:"Salvation Army — Evangeline Booth Lodge (семьи)", latitude:41.96926, longitude:-87.65042, address:"800 W Lawrence Ave", city:"Chicago", state:"IL", zip_code:"60640", phone:"773-275-9383", website:"https://centralusa.salvationarmy.org/northcentralillinois/evangeline-booth-lodge/", hours:"24/7", languages:["EN","ES"], description:"Кризисное размещение семей." },
-    { id:"garfield_center", type:"shelter", name:"DFSS Garfield Community Service Center (координация приютов)", latitude:41.88095, longitude:-87.70552, address:"10 S Kedzie Ave", city:"Chicago", state:"IL", zip_code:"60612", phone:"312-746-5400", website:"https://www.chicago.gov/.../community_servicecenterlocations.html", hours:"Mon–Fri 9–17", languages:["EN","ES"], description:"Точка входа/кулер, перенаправление в приюты." },
-
-    // --- WIC / INFANT NUTRITION ---
-    { id:"wic_ceda_lawrence", type:"infant_nutrition", name:"CEDA WIC — Lawrence", latitude:41.9690, longitude:-87.7010, address:"2754 W Lawrence Ave", city:"Chicago", state:"IL", zip_code:"60625", phone:"773-878-0578", website:"https://www.cedaorg.net", hours:"Mon–Fri 8–16:30", languages:["EN","ES"], description:"WIC для беременных/детей." },
-
-    // --- FREE CLOTHES / CHILDREN ---
-    { id:"c2c", type:"free_clothes", name:"Cradles to Crayons — Giving Factory (через партнеров)", latitude:41.9467, longitude:-87.6924, address:"2500 W Bradley Pl", city:"Chicago", state:"IL", zip_code:"60618", phone:"", website:"https://www.cradlestocrayons.org/chicago/new-giving-factory/", hours:"см. сайт", languages:["EN"], description:"Одежда/товары для детей через партнерские организации." },
-
-    // --- ADDICTION RECOVERY (координаты ориентировочные через адрес) ---
-    { id:"night_ministry", type:"addiction_recovery", name:"The Night Ministry — Health Outreach (направления)", latitude:41.9139, longitude:-87.6683, address:"1735 N Ashland Ave, Suite 2000", city:"Chicago", state:"IL", zip_code:"60622", phone:"773-784-9000", website:"https://www.thenightministry.org/contact-tnm", hours:"см. сайт", languages:["EN","ES"], description:"Мобильная помощь/направления к лечению, youth shelter The Crib." },
-
-    // --- IDHS OFFICES (FCRC) ---
-    { id:"idhs_southloop", type:"idhs", name:"IDHS FCRC — South Loop", latitude:41.8676, longitude:-87.6258, address:"1112 S Wabash Ave", city:"Chicago", state:"IL", zip_code:"60605", phone:"312-793-7500", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"SNAP/WIC/Medicaid — запись через ABE." },
-    { id:"idhs_northside", type:"idhs", name:"IDHS FCRC — Northside", latitude:41.99386, longitude:-87.75026, address:"6200 N Hiawatha Ave (5 этаж)", city:"Chicago", state:"IL", zip_code:"60646", phone:"773-907-4100", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"Общий приём, поддержка." },
-    { id:"idhs_northwest", type:"idhs", name:"IDHS FCRC — Northwest", latitude:41.89524, longitude:-87.72875, address:"4105 W Chicago Ave", city:"Chicago", state:"IL", zip_code:"60651", phone:"773-265-7000", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"Общий приём, поддержка." },
-    { id:"idhs_woodlawn", type:"idhs", name:"IDHS FCRC — Woodlawn", latitude:41.7807, longitude:-87.6036, address:"915 E 63rd St", city:"Chicago", state:"IL", zip_code:"60637", phone:"773-753-2406", website:"https://www.dhs.state.il.us", hours:"см. сайт", languages:["EN","ES"], description:"Общий приём, поддержка." }
-  ];
-
-  // === Загрузка из API ===
-  async function fetchFromApi(params={}) {
-    const url = new URL(API_BASE + "/resources");
-    Object.entries(params).forEach(([k,v]) => {
-      if (v !== undefined && v !== null && v !== "" && v !== "all") url.searchParams.set(k, v);
-    });
-    const res = await fetch(url.toString());
-    if (!res.ok) throw new Error("API недоступно");
-    return res.json();
-  }
-
-  function popupHtml(r) {
-    const t = i18n[LANG];
-    const typeLabel = t.types[r.type] || r.type;
-    const langs = (r.languages || []).join(", ");
-    const help = t.helpText[r.type] || "";
-    return `
-      <strong>${r.name}</strong><br/>
-      <em>${typeLabel}</em><br/>
-      ${r.address || ""}${r.city?`, ${r.city}`:""}${r.state?`, ${r.state}`:""} ${r.zip_code || ""}<br/>
-      ${r.phone ? `☎️ <a href="tel:${r.phone.replace(/[^0-9+]/g,'')}">${r.phone}</a><br/>` : "" }
-      ${r.website ? `<a href="${r.website}" target="_blank" rel="noopener">🌐 Website</a><br/>` : "" }
-      ${r.hours ? `⏰ ${r.hours}<br/>` : "" }
-      ${r.description ? `<small>${r.description}</small><br/>` : "" }
-      ${langs ? `🌐 ${langs}<br/>` : ""}
-      ${help ? `<div class="note">${help}</div>` : ""}
-    `;
-  }
-
-  function renderResources(items) {
-    clusters.clearLayers();
-    items.forEach(r => {
-      if (typeof r.latitude !== "number" || typeof r.longitude !== "number") return;
-      const m = L.marker([r.latitude, r.longitude], { icon: iconFor(r.type) });
-      m.bindPopup(popupHtml(r));
-      clusters.addLayer(m);
-    });
-    if (items.length) {
-      const bounds = L.latLngBounds(items.filter(r=>r.latitude && r.longitude).map(r => [r.latitude, r.longitude]));
-      if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
-    }
-    document.getElementById("count").textContent = items.length;
-  }
-
-  async function runSearch(useCenter=false) {
-    const params = {};
-    const typeVal = document.getElementById("type").value;
-    const q = document.getElementById("q").value.trim();
-    const zip = document.getElementById("zip").value.trim();
-    const radius = document.getElementById("radius_km").value;
-    const useApi = document.getElementById("useApi").checked;
-    const useOffline = document.getElementById("useOffline").checked;
-
-    if (typeVal !== "all") params.type = typeVal;
-    if (q) params.q = q;
-    if (zip) params.zip_code = zip;
-
-    if (useCenter) {
-      const c = map.getCenter();
-      params.lat = c.lat.toFixed(6);
-      params.lng = c.lng.toFixed(6);
-      params.radius_km = radius;
-    }
-
-    let items = [];
-    if (useApi) {
-      try { items = await fetchFromApi(params); } catch(e) { console.warn("API error:", e); }
-    }
-    if (useOffline) {
-      const filtered = OFFLINE_COOK.filter(r => {
-        const typeOk = (typeVal === "all") || (r.type === typeVal);
-        const qOk = q ? ( (r.name||"").toLowerCase().includes(q.toLowerCase()) || (r.address||"").toLowerCase().includes(q.toLowerCase()) ) : true;
-        const zipOk = zip ? (r.zip_code === zip) : true;
-        return typeOk && qOk && zipOk;
-      });
-      // если выбран радиус по центру карты
-      if (useCenter) {
-        const c = map.getCenter();
-        const R = Number(radius) || 25;
-        items = items.concat(filtered.filter(r => {
-          const d = haversineKm(c.lat, c.lng, r.latitude, r.longitude);
-          return d <= R;
-        }));
-      } else {
-        items = items.concat(filtered);
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
       }
-    }
-    // убрать дубликаты по id/name+addr
-    const uniq = {};
-    const merged = [];
-    for (const r of items) {
-      const key = r.id || `${r.name}|${r.address}`;
-      if (!uniq[key]) { uniq[key]=1; merged.push(r); }
-    }
-    renderResources(merged);
-  }
 
-  // гео-расстояние
-  function haversineKm(lat1, lon1, lat2, lon2) {
-    const toRad = x => x*Math.PI/180;
-    const R = 6371;
-    const dLat = toRad(lat2-lat1), dLon = toRad(lon2-lon1);
-    const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg-dark);
+        font-family:
+          "Inter",
+          -apple-system,
+          sans-serif;
+        color: var(--text);
+        overflow: hidden;
+      }
 
-  document.getElementById("searchBtn").addEventListener("click", () => runSearch(true));
-  document.getElementById("nearMe").addEventListener("click", () => {
-    if (!navigator.geolocation) return runSearch(true);
-    navigator.geolocation.getCurrentPosition(
-      pos => { map.setView([pos.coords.latitude, pos.coords.longitude], 12); runSearch(true); },
-      () => runSearch(true)
-    );
-  });
+      #map {
+        height: 100vh;
+        width: 100%;
+        filter: grayscale(0.2) contrast(1.1);
+      }
 
-  // первая загрузка
-  runSearch(true);
-</script>
-</body>
+      /* SIDEBAR & MOBILE DRAWER */
+      .sidebar {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        bottom: 15px;
+        width: 340px;
+        background: var(--glass);
+        backdrop-filter: blur(25px) saturate(180%);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          top: auto;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 50vh;
+          border-radius: 28px 28px 0 0;
+          transform: translateY(0);
+        }
+        .sidebar::before {
+          content: "";
+          width: 40px;
+          height: 4px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 2px;
+          margin: 10px auto;
+          display: block;
+        }
+      }
+
+      .header-section {
+        padding: 24px;
+      }
+
+      /* LANG SWITCHER */
+      .lang-switcher {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .lang-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 6px 10px;
+        cursor: pointer;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+      .lang-btn.active {
+        color: #fff;
+        border-color: var(--accent);
+        background: rgba(79, 140, 255, 0.2);
+      }
+
+      /* SKELETON */
+      .skeleton-wrapper {
+        padding: 0 20px;
+      }
+      .skeleton {
+        height: 50px;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03) 25%,
+          rgba(255, 255, 255, 0.08) 50%,
+          rgba(255, 255, 255, 0.03) 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        border-radius: 16px;
+        margin-bottom: 10px;
+      }
+      @keyframes loading {
+        from {
+          background-position: 200% 0;
+        }
+        to {
+          background-position: -200% 0;
+        }
+      }
+
+      /* INPUTS */
+      .search-section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 16px;
+        border: 1px solid var(--glass-border);
+        background: rgba(255, 255, 255, 0.03);
+        color: #fff;
+        font-size: 14px;
+        outline: none;
+        transition: 0.3s;
+      }
+      input:focus,
+      select:focus {
+        border-color: var(--accent);
+        background: rgba(79, 140, 255, 0.05);
+        box-shadow: 0 0 15px var(--accent-glow);
+      }
+      select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 20px;
+      }
+      select option {
+        background: #1a1f2e;
+        color: #fff;
+      }
+
+      /* NAV */
+      nav {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 15px;
+      }
+      nav button {
+        width: 100%;
+        margin-bottom: 8px;
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        transition: 0.4s;
+      }
+      nav button svg {
+        width: 22px;
+        height: 22px;
+        margin-right: 14px;
+        fill: var(--muted);
+      }
+      nav button.active {
+        background: rgba(79, 140, 255, 0.12);
+        border-color: rgba(79, 140, 255, 0.2);
+        color: var(--accent);
+      }
+      nav button.active svg {
+        fill: var(--accent);
+        filter: drop-shadow(0 0 5px var(--accent));
+      }
+
+      /* DETAIL CARD */
+      .detail-card {
+        position: absolute;
+        right: 370px;
+        top: 15px;
+        width: 340px;
+        background: var(--glass-strong);
+        backdrop-filter: blur(30px);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        z-index: 1001;
+        padding: 28px;
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+        pointer-events: none;
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .detail-card.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+
+      /* MARKERS */
+      .apple-marker {
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        background: linear-gradient(145deg, #4f8cff, #1a5fff);
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        border: 2.5px solid #fff;
+      }
+      .apple-marker svg {
+        width: 22px;
+        height: 22px;
+        fill: white;
+      }
+      .marker-cluster div {
+        background: rgba(79, 140, 255, 0.9);
+        color: white;
+        font-weight: 800;
+        border-radius: 50%;
+      }
+
+      /* ZOOM CONTROLS */
+      .custom-zoom {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        z-index: 1000;
+        display: flex;
+        gap: 12px;
+      }
+      .map-btn {
+        width: 50px;
+        height: 50px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        color: white;
+        border-radius: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+      }
+
+      .county-zone {
+        animation: pulseZone 3s infinite ease-in-out;
+      }
+      @keyframes pulseZone {
+        0% {
+          fill-opacity: 0.1;
+        }
+        50% {
+          fill-opacity: 0.2;
+        }
+        100% {
+          fill-opacity: 0.1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="custom-zoom">
+      <button class="map-btn" onclick="map.zoomIn()">+</button>
+      <button class="map-btn" onclick="map.zoomOut()">-</button>
+      <button class="map-btn" onclick="locateUser()">📡</button>
+    </div>
+
+    <div class="sidebar">
+      <div class="header-section">
+        <div class="lang-switcher">
+          <button id="btn-en" class="lang-btn active" onclick="setLang('en')">
+            🇺🇸 EN
+          </button>
+          <button id="btn-ru" class="lang-btn" onclick="setLang('ru')">
+            🇷🇺 RU
+          </button>
+          <button id="btn-es" class="lang-btn" onclick="setLang('es')">
+            🇪🇸 ES
+          </button>
+        </div>
+        <h2 id="ui-title">Help Hub 2026</h2>
+        <div class="search-section">
+          <input
+            id="nameSearch"
+            placeholder="Type name..."
+            oninput="render()"
+          />
+          <select id="countySelect" onchange="changeCounty(this.value)">
+            <option value="cook">Cook County, IL</option>
+            <option value="lake">Lake County, IL</option>
+            <option value="ny">Manhattan, NY (Test)</option>
+          </select>
+          <input
+            id="zipSearch"
+            placeholder="Zip code..."
+            maxlength="5"
+            oninput="render()"
+          />
+        </div>
+      </div>
+
+      <div id="loader" class="skeleton-wrapper">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+
+      <nav id="categoryNav" style="display: none">
+        <button data-type="all" class="active" onclick="filterCat(this)">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 13h16v-2H4v2zm0 4h16v-2H4v2zm0-8h16V7H4v2z" />
+          </svg>
+          <span class="cat-label" data-key="all">All Resources</span>
+        </button>
+        <button data-type="food" onclick="filterCat(this)">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"
+            />
+          </svg>
+          <span class="cat-label" data-key="food">Food & WIC</span>
+        </button>
+        <button data-type="shelter" onclick="filterCat(this)">
+          <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+          </svg>
+          <span class="cat-label" data-key="shelter">Shelter</span>
+        </button>
+        <button data-type="legal" onclick="filterCat(this)">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 3v1h5v2h-1.07c-.45 4.45-3.11 7.4-5.93 7.4-2.82 0-5.48-2.95-5.93-7.4H4V4h5V3h3zm0 16H3v2h18v-2h-9z"
+            />
+          </svg>
+          <span class="cat-label" data-key="legal">Legal Aid</span>
+        </button>
+      </nav>
+
+      <div
+        id="stats"
+        style="
+          display: none;
+          padding: 20px;
+          border-top: 1px solid var(--glass-border);
+        "
+      >
+        <span id="ui-found">Identified</span>:
+        <span id="count" style="color: var(--accent)">0</span>
+      </div>
+    </div>
+
+    <div id="map"></div>
+    <div class="detail-card" id="detailCard"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+    <script>
+      const TRANSLATIONS = {
+        en: {
+          title: "Help Hub 2026",
+          found: "Identified",
+          all: "All Resources",
+          food: "Food & WIC",
+          shelter: "Shelter",
+          legal: "Legal Aid",
+          directions: "GET DIRECTIONS",
+        },
+        ru: {
+          title: "Центр помощи 2026",
+          found: "Найдено",
+          all: "Все ресурсы",
+          food: "Еда и WIC",
+          shelter: "Приюты",
+          legal: "Юр. помощь",
+          directions: "МАРШРУТ",
+        },
+        es: {
+          title: "Centro de Ayuda",
+          found: "Identificado",
+          all: "Recursos",
+          food: "Comida y WIC",
+          shelter: "Refugio",
+          legal: "Ayuda Legal",
+          directions: "DIRECCIONES",
+        },
+      };
+
+      const ICONS = {
+        food: `<svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>`,
+        shelter: `<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`,
+        legal: `<svg viewBox="0 0 24 24"><path d="M12 3v1h5v2h-1.07c-.45 4.45-3.11 7.4-5.93 7.4-2.82 0-5.48-2.95-5.93-7.4H4V4h5V3h3zm0 16H3v2h18v-2h-9z"/></svg>`,
+      };
+
+      const COUNTIES = {
+        cook: { center: [41.8781, -87.6298], zoom: 11 },
+        lake: { center: [42.32, -87.95], zoom: 11 },
+        ny: { center: [40.7128, -74.006], zoom: 13 },
+      };
+
+      let DATA = [],
+        currentLang = "en",
+        countyZone = null;
+      const map = L.map("map", { zoomControl: false }).setView(
+        COUNTIES.cook.center,
+        11,
+      );
+      L.tileLayer(
+        "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=0fe6180c-ac8c-4bb7-b57d-c83f1706f2ef",
+      ).addTo(map);
+      const clusters = L.markerClusterGroup().addTo(map);
+
+      async function loadData() {
+        try {
+          const res = await fetch("/v2/grants/");
+          DATA = await res.json();
+          setTimeout(() => {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("categoryNav").style.display = "block";
+            document.getElementById("stats").style.display = "block";
+            render();
+          }, 1000);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      function setLang(lang) {
+        currentLang = lang;
+        document
+          .querySelectorAll(".lang-btn")
+          .forEach((b) => b.classList.toggle("active", b.id === `btn-${lang}`));
+        const t = TRANSLATIONS[lang];
+        document.getElementById("ui-title").innerText = t.title;
+        document.getElementById("ui-found").innerText = t.found;
+        document
+          .querySelectorAll(".cat-label")
+          .forEach((el) => (el.innerText = t[el.dataset.key]));
+        render();
+      }
+
+      function changeCounty(key) {
+        const c = COUNTIES[key];
+        map.flyTo(c.center, c.zoom, { duration: 1.5 });
+        if (countyZone) map.removeLayer(countyZone);
+        countyZone = L.circle(c.center, {
+          radius: 18000,
+          color: "#4f8cff",
+          weight: 2,
+          fillOpacity: 0.1,
+          className: "county-zone",
+        }).addTo(map);
+        setTimeout(render, 500);
+      }
+
+      function filterCat(btn) {
+        document
+          .querySelectorAll("nav button")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        render();
+      }
+
+      function render() {
+        clusters.clearLayers();
+        const type = document.querySelector("nav button.active").dataset.type;
+        const nameQ = document.getElementById("nameSearch").value.toLowerCase();
+        const zipQ = document.getElementById("zipSearch").value;
+
+        const filtered = DATA.filter((r) => {
+          const rCat = r.category?.toLowerCase() || "";
+          const matchType =
+            type === "all" ||
+            rCat === type ||
+            (type === "food" && rCat === "wic");
+          const matchName = r.title.toLowerCase().includes(nameQ);
+          const matchZip = !zipQ || (r.address && r.address.includes(zipQ));
+          return matchType && matchName && matchZip;
+        });
+
+        document.getElementById("count").innerText = filtered.length;
+        filtered.forEach((r) => {
+          if (r.lat && r.lng) {
+            let iconKey = (r.category || "food").toLowerCase();
+            if (iconKey === "wic") iconKey = "food";
+            const m = L.marker([r.lat, r.lng], {
+              icon: L.divIcon({
+                className: "apple-marker",
+                html: ICONS[iconKey] || ICONS.food,
+                iconSize: [48, 48],
+                iconAnchor: [24, 24],
+              }),
+            }).on("click", (e) => {
+              L.DomEvent.stopPropagation(e);
+              showDetail(r);
+            });
+            clusters.addLayer(m);
+          }
+        });
+      }
+
+      function showDetail(r) {
+        const card = document.getElementById("detailCard");
+        card.classList.add("active");
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; margin-bottom:15px">
+             <span style="color:#4caf50; font-weight:700">● ACTIVE</span>
+             <button onclick="this.closest('.detail-card').classList.remove('active')" style="background:none; border:none; color:white; cursor:pointer; font-size:20px">×</button>
+          </div>
+          <h2>${r.title}</h2>
+          <p style="color:var(--muted); line-height:1.5">${r.summary || ""}</p>
+          <div style="margin-top:15px; padding:10px; background:rgba(255,255,255,0.05); border-radius:12px">📍 ${r.address || "Verified"}</div>
+          <button class="map-btn" style="width:100%; margin-top:20px; font-size:14px; font-weight:700; background:var(--accent)" 
+                  onclick="window.open('https://www.google.com/maps?q=${r.lat},${r.lng}')">
+            ${TRANSLATIONS[currentLang].directions}
+          </button>
+        `;
+      }
+
+      function locateUser() {
+        map.locate({ setView: true, maxZoom: 14 });
+      }
+      map.on("click", () =>
+        document.getElementById("detailCard").classList.remove("active"),
+      );
+      window.onload = loadData;
+    </script>
+  </body>
 </html>

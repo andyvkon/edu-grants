@@ -1,0 +1,14 @@
+[
+  {
+    "id": "clothes_1",
+    "type": "clothes",
+    "name": "Sample Clothes Donation",
+    "latitude": 41.92,
+    "longitude": -87.7,
+    "address": "300 Clothes Ave, Chicago, IL",
+    "phone": "312-555-3333",
+    "website": null,
+    "hours": null,
+    "description": "Free clothing distribution"
+  }
+]

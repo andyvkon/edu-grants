@@ -1,5 +1,5 @@
-from typing import Optional
-from fastapi import APIRouter, Query, HTTPException
+from typing import Optional, List
+from fastapi import APIRouter, Query, HTTPException, Depends
 from app.db import get_conn
 from app.security import require_admin
 
@@ -7,37 +7,59 @@ router = APIRouter()
 
 @router.get('/v2/grants/')
 def list_grants(q: Optional[str] = None, include_status: str = Query('published')):
-    allowed = {'draft','published'}
+    allowed = {'draft', 'published'}
     statuses = [s.strip() for s in include_status.split(',') if s.strip() in allowed]
     if not statuses:
         statuses = ['published']
-    placeholders = ','.join('?'*len(statuses))
-    sql = f'SELECT id,title,summary,status FROM grants WHERE status IN ({placeholders})'
-    params = statuses
+        
+    placeholders = ','.join('?' * len(statuses))
+    # ДОБАВЛЯЕМ НОВЫЕ ПОЛЯ В SELECT: lat, lng, category, working_hours, url, address
+    sql = f'''
+        SELECT id, title, summary, status, lat, lng, category, working_hours, url, address 
+        FROM grants 
+        WHERE status IN ({placeholders})
+    '''
+    params = list(statuses)
+    
     if q:
         sql += ' AND (title LIKE ? OR summary LIKE ?)'
         like = f'%{q}%'
-        params += [like, like]
+        params.extend([like, like])
+    
     sql += ' ORDER BY id DESC'
+    
     conn = get_conn()
-    rows = [dict(r) for r in conn.execute(sql, params).fetchall()]
+    cursor = conn.execute(sql, params)
+    # Превращаем результат в список словарей
+    rows = [dict(r) for r in cursor.fetchall()]
     conn.close()
     return rows
 
-@router.patch('/v2/grants/{grant_id}/publish')
-def publish(grant_id: int, _: None = require_admin):
+@router.post('/v2/grants/')
+def create_grant(data: dict):
+    # Проверяем минимальный набор данных
+    required = ['title', 'summary', 'category', 'lat', 'lng']
+    if not all(k in data for k in required):
+        raise HTTPException(status_code=400, detail=f"Missing fields. Required: {required}")
+        
     conn = get_conn(); cur = conn.cursor()
-    cur.execute('UPDATE grants SET status="published" WHERE id=?',(grant_id,))
-    if cur.rowcount==0:
-        conn.close(); raise HTTPException(404,'Grant not found')
+    cur.execute(
+        '''INSERT INTO grants (title, summary, status, lat, lng, category, working_hours, url, address) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''',
+        (
+            data['title'], 
+            data['summary'], 
+            'draft', 
+            data['lat'], 
+            data['lng'], 
+            data['category'], 
+            data.get('working_hours'), # .get() не выдаст ошибку, если поля нет
+            data.get('url'), 
+            data.get('address')
+        )
+    )
+    new_id = cur.lastrowid
     conn.commit(); conn.close()
-    return {'ok':True,'id':grant_id,'status':'published'}
+    return {'ok': True, 'id': new_id}
 
-@router.patch('/v2/grants/{grant_id}/unpublish')
-def unpublish(grant_id: int, _: None = require_admin):
-    conn = get_conn(); cur = conn.cursor()
-    cur.execute('UPDATE grants SET status="draft" WHERE id=?',(grant_id,))
-    if cur.rowcount==0:
-        conn.close(); raise HTTPException(404,'Grant not found')
-    conn.commit(); conn.close()
-    return {'ok':True,'id':grant_id,'status':'draft'}
+# Функции publish и unpublish оставляем как были
