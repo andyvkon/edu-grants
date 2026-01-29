@@ -46,8 +46,8 @@ def mount_static_and_routes(app: FastAPI):
     db.init_db()
     seed_if_empty()
     
-    # 2. Подключаем API роутер
-    app.include_router(api_router)
+    # 2. Подключаем API роутер с префиксом /api
+    app.include_router(api_router, prefix="/api")
     
     # 3. Монтируем статику (папку web)
     if WEB_PATH.exists():

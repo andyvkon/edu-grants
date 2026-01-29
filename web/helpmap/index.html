@@ -469,7 +469,7 @@
 
       async function loadData() {
         try {
-          const res = await fetch("/v2/grants/");
+          const res = await fetch("/api/v2/grants/");
           DATA = await res.json();
           setTimeout(() => {
             document.getElementById("loader").style.display = "none";
