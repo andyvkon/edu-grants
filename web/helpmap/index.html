@@ -1,586 +1,740 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Community Aid Map 2026</title>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
-    />
+<head>
+  <meta charset="utf-8" />
+  <title>Community Aid Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
-    />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
 
-    <style>
-      :root {
-        --glass: rgba(15, 18, 28, 0.8);
-        --glass-strong: rgba(10, 12, 20, 0.95);
-        --glass-border: rgba(255, 255, 255, 0.08);
-        --accent: #4f8cff;
-        --accent-glow: rgba(79, 140, 255, 0.4);
-        --text: #ffffff;
-        --muted: #a0a0b0;
-        --bg-dark: #050508;
-      }
+  <style>
+    :root {
+      --glass: rgba(16, 21, 34, 0.72);
+      --glass-strong: rgba(12, 17, 29, 0.9);
+      --border: rgba(255,255,255,.1);
+      --text: #f5f7fb;
+      --muted: #a5adbd;
+      --accent: #5a8fff;
+      --accent-2: #2f6df6;
+      --success: #5dd39e;
+    }
 
-      * {
-        box-sizing: border-box;
-        -webkit-tap-highlight-color: transparent;
-      }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: #05070d;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      overflow: hidden;
+    }
 
-      html,
-      body {
-        margin: 0;
-        height: 100%;
-        background: var(--bg-dark);
-        font-family:
-          "Inter",
-          -apple-system,
-          sans-serif;
-        color: var(--text);
-        overflow: hidden;
-      }
+    #map { height: 100vh; width: 100%; }
 
-      #map {
-        height: 100vh;
-        width: 100%;
-        filter: grayscale(0.2) contrast(1.1);
-      }
+    .leaflet-control-attribution {
+      background: rgba(10,14,22,.4) !important;
+      color: rgba(255,255,255,.35) !important;
+      font-size: 10px;
+      backdrop-filter: blur(10px);
+    }
 
-      /* SIDEBAR & MOBILE DRAWER */
+    .leaflet-control-zoom a {
+      background: rgba(14,20,32,.72) !important;
+      color: #fff !important;
+      border-color: rgba(255,255,255,.08) !important;
+      backdrop-filter: blur(12px);
+    }
+
+    .sidebar {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      bottom: 16px;
+      width: 320px;
+      background: var(--glass);
+      backdrop-filter: blur(22px) saturate(140%);
+      -webkit-backdrop-filter: blur(22px) saturate(140%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+
+    .sidebar-header {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .title-row h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -.02em;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 5px rgba(93,211,158,.12);
+      flex: 0 0 auto;
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .search-wrap {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    #search {
+      min-width: 0;
+      padding: 11px 12px;
+      border-radius: 13px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.065);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+      transition: border-color .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+
+    #search:focus {
+      border-color: rgba(90,143,255,.55);
+      background: rgba(255,255,255,.085);
+      box-shadow: 0 0 0 4px rgba(90,143,255,.1);
+    }
+
+    #clearSearch {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding: 0 12px;
+      border-radius: 13px;
+      cursor: pointer;
+      opacity: .55;
+      transition: opacity .2s ease, background .2s ease;
+    }
+
+    #clearSearch.enabled { opacity: 1; }
+    #clearSearch:hover { background: rgba(255,255,255,.1); }
+
+    .stats {
+      padding: 0 16px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stats strong { color: var(--text); font-weight: 650; }
+
+    .categories {
+      padding: 0 12px 12px;
+      display: grid;
+      gap: 7px;
+    }
+
+    .category-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 14px;
+      background: rgba(255,255,255,.055);
+      color: var(--text);
+      padding: 11px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+
+    .category-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,.085); }
+    .category-btn.active {
+      background: linear-gradient(180deg, rgba(90,143,255,.28), rgba(47,109,246,.18));
+      box-shadow: inset 0 0 0 1px rgba(90,143,255,.22);
+    }
+
+    .cat-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.08);
+      flex: 0 0 auto;
+    }
+
+    .cat-icon svg { width: 20px; height: 20px; fill: #fff; }
+
+    .list-title {
+      padding: 4px 16px 8px;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .resource-list {
+      flex: 1;
+      overflow: auto;
+      padding: 0 10px 12px;
+    }
+
+    .resource-item {
+      width: 100%;
+      border: 0;
+      color: var(--text);
+      background: transparent;
+      text-align: left;
+      padding: 10px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .resource-item:hover { background: rgba(255,255,255,.06); transform: translateX(-2px); }
+    .resource-name { font-size: 13px; font-weight: 650; line-height: 1.25; }
+    .resource-meta { margin-top: 3px; color: var(--muted); font-size: 11px; }
+
+    .detail-card {
+      position: absolute;
+      right: 352px;
+      top: 16px;
+      bottom: 16px;
+      width: 340px;
+      background: var(--glass-strong);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      z-index: 1100;
+      padding: 18px;
+      overflow: auto;
+      opacity: 0;
+      transform: translateX(24px) scale(.985);
+      pointer-events: none;
+      transition: opacity .28s ease, transform .32s cubic-bezier(.22,.8,.22,1);
+      box-shadow: 0 24px 60px rgba(0,0,0,.4);
+    }
+
+    .detail-card.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .detail-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 0;
+      background: transparent;
+      color: #8fb2ff;
+      padding: 0;
+      cursor: pointer;
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+
+    .detail-card h2 { margin: 0 0 8px; font-size: 22px; letter-spacing: -.02em; }
+    .detail-card p { color: var(--muted); line-height: 1.45; font-size: 13px; }
+    .detail-row { margin-top: 14px; }
+    .detail-label { color: #7f8aa0; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+    .detail-value { margin-top: 4px; color: var(--text); font-size: 13px; }
+    .detail-card a { color: #9bbaff; text-decoration: none; }
+
+    .apple-marker {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #628ff8, #2f67e6);
+      border: 1px solid rgba(255,255,255,.28);
+      box-shadow: 0 0 0 6px rgba(83,129,238,.13), 0 8px 24px rgba(0,0,0,.5);
+      transform: scale(.82);
+      opacity: 0;
+      animation: markerIn .32s cubic-bezier(.22,.8,.22,1) forwards;
+    }
+
+    .apple-marker svg { width: 24px; height: 24px; fill: #fff; }
+
+    @keyframes markerIn {
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .density-zone {
+      transition: opacity .28s ease;
+    }
+
+    .map-status {
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      z-index: 900;
+      max-width: 340px;
+      background: rgba(14,20,32,.68);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      color: #dce4f5;
+      padding: 10px 12px;
+      font-size: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.25);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .map-status.hidden { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+
+    .locate-btn {
+      position: absolute;
+      left: 18px;
+      bottom: 22px;
+      z-index: 900;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(14,20,32,.75);
+      backdrop-filter: blur(14px);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(0,0,0,.3);
+      font-size: 18px;
+    }
+
+    @media (max-width: 820px) {
       .sidebar {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        bottom: 15px;
-        width: 340px;
-        background: var(--glass);
-        backdrop-filter: blur(25px) saturate(180%);
-        border: 1px solid var(--glass-border);
-        border-radius: 28px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-        animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        transition: transform 0.5s ease;
+        top: auto;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        width: auto;
+        max-height: 48vh;
       }
-
-      @keyframes slideIn {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .sidebar {
-          top: auto;
-          right: 0;
-          left: 0;
-          bottom: 0;
-          width: 100%;
-          height: 50vh;
-          border-radius: 28px 28px 0 0;
-          transform: translateY(0);
-        }
-        .sidebar::before {
-          content: "";
-          width: 40px;
-          height: 4px;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 2px;
-          margin: 10px auto;
-          display: block;
-        }
-      }
-
-      .header-section {
-        padding: 24px;
-      }
-
-      /* LANG SWITCHER */
-      .lang-switcher {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-      .lang-btn {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        padding: 6px 10px;
-        cursor: pointer;
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 600;
-        transition: 0.3s;
-      }
-      .lang-btn.active {
-        color: #fff;
-        border-color: var(--accent);
-        background: rgba(79, 140, 255, 0.2);
-      }
-
-      /* SKELETON */
-      .skeleton-wrapper {
-        padding: 0 20px;
-      }
-      .skeleton {
-        height: 50px;
-        background: linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.03) 25%,
-          rgba(255, 255, 255, 0.08) 50%,
-          rgba(255, 255, 255, 0.03) 75%
-        );
-        background-size: 200% 100%;
-        animation: loading 1.5s infinite;
-        border-radius: 16px;
-        margin-bottom: 10px;
-      }
-      @keyframes loading {
-        from {
-          background-position: 200% 0;
-        }
-        to {
-          background-position: -200% 0;
-        }
-      }
-
-      /* INPUTS */
-      .search-section {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-      input,
-      select {
-        width: 100%;
-        padding: 14px 18px;
-        border-radius: 16px;
-        border: 1px solid var(--glass-border);
-        background: rgba(255, 255, 255, 0.03);
-        color: #fff;
-        font-size: 14px;
-        outline: none;
-        transition: 0.3s;
-      }
-      input:focus,
-      select:focus {
-        border-color: var(--accent);
-        background: rgba(79, 140, 255, 0.05);
-        box-shadow: 0 0 15px var(--accent-glow);
-      }
-      select {
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 15px center;
-        background-size: 20px;
-      }
-      select option {
-        background: #1a1f2e;
-        color: #fff;
-      }
-
-      /* NAV */
-      nav {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px 15px;
-      }
-      nav button {
-        width: 100%;
-        margin-bottom: 8px;
-        padding: 14px;
-        border-radius: 18px;
-        border: 1px solid transparent;
-        background: transparent;
-        color: var(--muted);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        transition: 0.4s;
-      }
-      nav button svg {
-        width: 22px;
-        height: 22px;
-        margin-right: 14px;
-        fill: var(--muted);
-      }
-      nav button.active {
-        background: rgba(79, 140, 255, 0.12);
-        border-color: rgba(79, 140, 255, 0.2);
-        color: var(--accent);
-      }
-      nav button.active svg {
-        fill: var(--accent);
-        filter: drop-shadow(0 0 5px var(--accent));
-      }
-
-      /* DETAIL CARD */
       .detail-card {
-        position: absolute;
-        right: 370px;
-        top: 15px;
-        width: 340px;
-        background: var(--glass-strong);
-        backdrop-filter: blur(30px);
-        border: 1px solid var(--glass-border);
-        border-radius: 28px;
-        z-index: 1001;
-        padding: 28px;
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-        pointer-events: none;
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        left: 10px;
+        right: 10px;
+        top: auto;
+        bottom: 10px;
+        width: auto;
+        max-height: 62vh;
       }
-      .detail-card.active {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        pointer-events: auto;
-      }
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="mapStatus" class="map-status">Loading resources…</div>
 
-      /* MARKERS */
-      .apple-marker {
-        width: 48px !important;
-        height: 48px !important;
-        border-radius: 50% !important;
-        background: linear-gradient(145deg, #4f8cff, #1a5fff);
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        border: 2.5px solid #fff;
-      }
-      .apple-marker svg {
-        width: 22px;
-        height: 22px;
-        fill: white;
-      }
-      .marker-cluster div {
-        background: rgba(79, 140, 255, 0.9);
-        color: white;
-        font-weight: 800;
-        border-radius: 50%;
-      }
-
-      /* ZOOM CONTROLS */
-      .custom-zoom {
-        position: absolute;
-        bottom: 30px;
-        left: 30px;
-        z-index: 1000;
-        display: flex;
-        gap: 12px;
-      }
-      .map-btn {
-        width: 50px;
-        height: 50px;
-        background: var(--glass);
-        border: 1px solid var(--glass-border);
-        color: white;
-        border-radius: 16px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-      }
-
-      .county-zone {
-        animation: pulseZone 3s infinite ease-in-out;
-      }
-      @keyframes pulseZone {
-        0% {
-          fill-opacity: 0.1;
-        }
-        50% {
-          fill-opacity: 0.2;
-        }
-        100% {
-          fill-opacity: 0.1;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="custom-zoom">
-      <button class="map-btn" onclick="map.zoomIn()">+</button>
-      <button class="map-btn" onclick="map.zoomOut()">-</button>
-      <button class="map-btn" onclick="locateUser()">📡</button>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="title-row">
+        <h1>Community Aid Map</h1>
+        <span class="status-dot" aria-hidden="true"></span>
+      </div>
+      <div class="subtitle">Cook County pilot · ZIP-first resource discovery</div>
     </div>
 
-    <div class="sidebar">
-      <div class="header-section">
-        <div class="lang-switcher">
-          <button id="btn-en" class="lang-btn active" onclick="setLang('en')">
-            🇺🇸 EN
-          </button>
-          <button id="btn-ru" class="lang-btn" onclick="setLang('ru')">
-            🇷🇺 RU
-          </button>
-          <button id="btn-es" class="lang-btn" onclick="setLang('es')">
-            🇪🇸 ES
-          </button>
-        </div>
-        <h2 id="ui-title">Help Hub 2026</h2>
-        <div class="search-section">
-          <input
-            id="nameSearch"
-            placeholder="Type name..."
-            oninput="render()"
-          />
-          <select id="countySelect" onchange="changeCounty(this.value)">
-            <option value="cook">Cook County, IL</option>
-            <option value="lake">Lake County, IL</option>
-            <option value="ny">Manhattan, NY (Test)</option>
-          </select>
-          <input
-            id="zipSearch"
-            placeholder="Zip code..."
-            maxlength="5"
-            oninput="render()"
-          />
-        </div>
-      </div>
-
-      <div id="loader" class="skeleton-wrapper">
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-        <div class="skeleton"></div>
-      </div>
-
-      <nav id="categoryNav" style="display: none">
-        <button data-type="all" class="active" onclick="filterCat(this)">
-          <svg viewBox="0 0 24 24">
-            <path d="M4 13h16v-2H4v2zm0 4h16v-2H4v2zm0-8h16V7H4v2z" />
-          </svg>
-          <span class="cat-label" data-key="all">All Resources</span>
-        </button>
-        <button data-type="food" onclick="filterCat(this)">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"
-            />
-          </svg>
-          <span class="cat-label" data-key="food">Food & WIC</span>
-        </button>
-        <button data-type="shelter" onclick="filterCat(this)">
-          <svg viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-          </svg>
-          <span class="cat-label" data-key="shelter">Shelter</span>
-        </button>
-        <button data-type="legal" onclick="filterCat(this)">
-          <svg viewBox="0 0 24 24">
-            <path
-              d="M12 3v1h5v2h-1.07c-.45 4.45-3.11 7.4-5.93 7.4-2.82 0-5.48-2.95-5.93-7.4H4V4h5V3h3zm0 16H3v2h18v-2h-9z"
-            />
-          </svg>
-          <span class="cat-label" data-key="legal">Legal Aid</span>
-        </button>
-      </nav>
-
-      <div
-        id="stats"
-        style="
-          display: none;
-          padding: 20px;
-          border-top: 1px solid var(--glass-border);
-        "
-      >
-        <span id="ui-found">Identified</span>:
-        <span id="count" style="color: var(--accent)">0</span>
-      </div>
+    <div class="search-wrap">
+      <input id="search" inputmode="numeric" maxlength="5" placeholder="Search ZIP or resource name" />
+      <button id="clearSearch" type="button" aria-label="Clear search">Clear</button>
     </div>
 
-    <div id="map"></div>
-    <div class="detail-card" id="detailCard"></div>
+    <div class="stats">
+      <span><strong id="count">0</strong> resources</span>
+      <span id="areaLabel">All areas</span>
+    </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <div class="categories">
+      <button class="category-btn active" data-type="all">
+        <span class="cat-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm6.92 8H15.9a14.3 14.3 0 0 0-1.05-4.45A7.03 7.03 0 0 1 18.92 11ZM12 5c.88 1.06 1.58 3.06 1.86 6h-3.72C10.42 8.06 11.12 6.06 12 5Zm-2.85 1.55A14.3 14.3 0 0 0 8.1 11H5.08a7.03 7.03 0 0 1 4.07-4.45ZM5.08 13H8.1c.16 1.7.52 3.2 1.05 4.45A7.03 7.03 0 0 1 5.08 13ZM12 19c-.88-1.06-1.58-3.06-1.86-6h3.72c-.28 2.94-.98 4.94-1.86 6Zm2.85-1.55A14.3 14.3 0 0 0 15.9 13h3.02a7.03 7.03 0 0 1-4.07 4.45Z"/></svg>
+        </span>
+        All resources
+      </button>
 
-    <script>
-      const TRANSLATIONS = {
-        en: {
-          title: "Help Hub 2026",
-          found: "Identified",
-          all: "All Resources",
-          food: "Food & WIC",
-          shelter: "Shelter",
-          legal: "Legal Aid",
-          directions: "GET DIRECTIONS",
-        },
-        ru: {
-          title: "Центр помощи 2026",
-          found: "Найдено",
-          all: "Все ресурсы",
-          food: "Еда и WIC",
-          shelter: "Приюты",
-          legal: "Юр. помощь",
-          directions: "МАРШРУТ",
-        },
-        es: {
-          title: "Centro de Ayuda",
-          found: "Identificado",
-          all: "Recursos",
-          food: "Comida y WIC",
-          shelter: "Refugio",
-          legal: "Ayuda Legal",
-          directions: "DIRECCIONES",
-        },
+      <button class="category-btn" data-type="food">
+        <span class="cat-icon">
+          <svg viewBox="0 0 24 24"><path d="M3.5 11.7c0-4.15 3.48-7.2 8.5-7.2s8.5 3.05 8.5 7.2v3.15c0 2.88-2.2 5.15-5 5.15h-7c-2.8 0-5-2.27-5-5.15V11.7Zm3.1-1.25c.75.35 1.55.42 2.2.18.8-.3 1.24-.97 1.45-1.72-.92-.3-1.9-.18-2.6.25-.55.34-.9.8-1.05 1.29Zm5.2-2.15c.72.27 1.45.24 2.02-.06.67-.35 1.02-1 1.13-1.7-.85-.2-1.72-.03-2.32.43-.47.36-.73.82-.83 1.33Zm3.05 3.05c.72.25 1.45.2 2.03-.12.66-.37.99-1.02 1.08-1.73-.85-.17-1.72.03-2.3.5-.45.36-.7.82-.81 1.34Z"/></svg>
+        </span>
+        Food assistance
+      </button>
+
+      <button class="category-btn" data-type="shelter">
+        <span class="cat-icon"><svg viewBox="0 0 24 24"><path d="M12 3 2.8 10.3l1.25 1.56L5.5 10.7V21h5.25v-5.2h2.5V21h5.25V10.7l1.45 1.16 1.25-1.56L12 3Z"/></svg></span>
+        Shelter & housing
+      </button>
+
+      <button class="category-btn" data-type="medical">
+        <span class="cat-icon"><svg viewBox="0 0 24 24"><path d="M9.4 3h5.2v6.4H21v5.2h-6.4V21H9.4v-6.4H3V9.4h6.4V3Z"/></svg></span>
+        Medical care
+      </button>
+
+      <button class="category-btn" data-type="legal">
+        <span class="cat-icon"><svg viewBox="0 0 24 24"><path d="M11 3h2v2.1l5.2 2.1-.75 1.85L13 7.25V17h4v2H7v-2h4V7.25L6.55 9.05 5.8 7.2 11 5.1V3Zm-6.3 7.2h4.6L7 14.1 4.7 10.2Zm10 0h4.6L17 14.1l-2.3-3.9Z"/></svg></span>
+        Legal aid
+      </button>
+
+      <button class="category-btn" data-type="jobs">
+        <span class="cat-icon"><svg viewBox="0 0 24 24"><path d="M8 4h8v3h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4V4Zm2 3h4V6h-4v1Zm-6 4v7h16v-7h-6v2h-4v-2H4Z"/></svg></span>
+        Employment help
+      </button>
+    </div>
+
+    <div class="list-title">Visible resources</div>
+    <div id="resourceList" class="resource-list"></div>
+  </aside>
+
+  <section id="detailCard" class="detail-card" aria-live="polite"></section>
+  <button class="locate-btn" id="locateBtn" type="button" aria-label="Use my location">⌖</button>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+  <script>
+    const DATA_URL = "./data/resources.sample.json";
+
+    const map = L.map("map", {
+      zoomControl: true,
+      attributionControl: true,
+      preferCanvas: true
+    }).setView([42.055, -88.02], 11);
+
+    map.attributionControl.setPrefix("");
+
+    L.tileLayer(
+      "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+      {
+        maxZoom: 18,
+        updateWhenIdle: true,
+        updateWhenZooming: false,
+        keepBuffer: 1,
+        detectRetina: false,
+        attribution: "&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap"
+      }
+    ).addTo(map);
+
+    // Keep clustering available for large future datasets, but show individual markers at our normal working zoom.
+    const clusters = L.markerClusterGroup({
+      maxClusterRadius: 28,
+      disableClusteringAtZoom: 10,
+      showCoverageOnHover: false,
+      spiderfyOnMaxZoom: true,
+      removeOutsideVisibleBounds: true,
+      animate: true
+    });
+    map.addLayer(clusters);
+
+    const ICONS = {
+      food: `<svg viewBox="0 0 24 24"><path d="M3.5 11.7c0-4.15 3.48-7.2 8.5-7.2s8.5 3.05 8.5 7.2v3.15c0 2.88-2.2 5.15-5 5.15h-7c-2.8 0-5-2.27-5-5.15V11.7Zm3.1-1.25c.75.35 1.55.42 2.2.18.8-.3 1.24-.97 1.45-1.72-.92-.3-1.9-.18-2.6.25-.55.34-.9.8-1.05 1.29Zm5.2-2.15c.72.27 1.45.24 2.02-.06.67-.35 1.02-1 1.13-1.7-.85-.2-1.72-.03-2.32.43-.47.36-.73.82-.83 1.33Zm3.05 3.05c.72.25 1.45.2 2.03-.12.66-.37.99-1.02 1.08-1.73-.85-.17-1.72.03-2.3.5-.45.36-.7.82-.81 1.34Z"/></svg>`,
+      shelter: `<svg viewBox="0 0 24 24"><path d="M12 3 2.8 10.3l1.25 1.56L5.5 10.7V21h5.25v-5.2h2.5V21h5.25V10.7l1.45 1.16 1.25-1.56L12 3Z"/></svg>`,
+      medical: `<svg viewBox="0 0 24 24"><path d="M9.4 3h5.2v6.4H21v5.2h-6.4V21H9.4v-6.4H3V9.4h6.4V3Z"/></svg>`,
+      legal: `<svg viewBox="0 0 24 24"><path d="M11 3h2v2.1l5.2 2.1-.75 1.85L13 7.25V17h4v2H7v-2h4V7.25L6.55 9.05 5.8 7.2 11 5.1V3Zm-6.3 7.2h4.6L7 14.1 4.7 10.2Zm10 0h4.6L17 14.1l-2.3-3.9Z"/></svg>`,
+      jobs: `<svg viewBox="0 0 24 24"><path d="M8 4h8v3h4a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4V4Zm2 3h4V6h-4v1Zm-6 4v7h16v-7h-6v2h-4v-2H4Z"/></svg>`,
+      other: `<svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm-1 4h2v5h-2V8Zm0 7h2v2h-2v-2Z"/></svg>`
+    };
+
+    let DATA = [];
+    let currentType = "all";
+    let currentQuery = "";
+    let densityLayer = null;
+    let activeRenderToken = 0;
+
+    const $ = (id) => document.getElementById(id);
+    const searchEl = $("search");
+    const countEl = $("count");
+    const areaLabelEl = $("areaLabel");
+    const resourceListEl = $("resourceList");
+    const detailCardEl = $("detailCard");
+    const clearSearchEl = $("clearSearch");
+    const mapStatusEl = $("mapStatus");
+
+    function normalizeType(type) {
+      const t = String(type || "").toLowerCase();
+      if (t.includes("food")) return "food";
+      if (t.includes("shelter") || t.includes("housing")) return "shelter";
+      if (t.includes("medical") || t.includes("clinic") || t.includes("health")) return "medical";
+      if (t.includes("legal")) return "legal";
+      if (t.includes("job") || t.includes("employment") || t.includes("workforce")) return "jobs";
+      return "other";
+    }
+
+    function flattenData(raw) {
+      if (!Array.isArray(raw)) return [];
+      return raw.flat(Infinity).filter(item => item && typeof item === "object" && !Array.isArray(item));
+    }
+
+    function normalizeResource(r, index) {
+      const lat = Number(r.lat ?? r.latitude);
+      const lng = Number(r.lng ?? r.lon ?? r.longitude);
+      return {
+        ...r,
+        id: r.id ?? `resource_${index + 1}`,
+        type: normalizeType(r.type),
+        name: String(r.name || "Unnamed resource").trim(),
+        lat,
+        lng,
+        zip: String(r.zip || "").trim(),
+        city: String(r.city || "").trim(),
+        address: String(r.address || "").trim(),
+        phone: String(r.phone || "").trim(),
+        website: String(r.website || "").trim(),
+        eligibility: String(r.eligibility || "").trim(),
+        notes: String(r.notes || "").trim()
       };
+    }
 
-      const ICONS = {
-        food: `<svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>`,
-        shelter: `<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`,
-        legal: `<svg viewBox="0 0 24 24"><path d="M12 3v1h5v2h-1.07c-.45 4.45-3.11 7.4-5.93 7.4-2.82 0-5.48-2.95-5.93-7.4H4V4h5V3h3zm0 16H3v2h18v-2h-9z"/></svg>`,
-      };
+    function isValidResource(r) {
+      return r.name && Number.isFinite(r.lat) && Number.isFinite(r.lng) && Math.abs(r.lat) <= 90 && Math.abs(r.lng) <= 180;
+    }
 
-      const COUNTIES = {
-        cook: { center: [41.8781, -87.6298], zoom: 11 },
-        lake: { center: [42.32, -87.95], zoom: 11 },
-        ny: { center: [40.7128, -74.006], zoom: 13 },
-      };
+    function getFilteredData() {
+      const q = currentQuery.trim().toLowerCase();
+      return DATA.filter(r => {
+        const typeOk = currentType === "all" || r.type === currentType;
+        if (!typeOk) return false;
+        if (!q) return true;
+        return [r.name, r.zip, r.city, r.address].some(value => String(value || "").toLowerCase().includes(q));
+      });
+    }
 
-      let DATA = [],
-        currentLang = "en",
-        countyZone = null;
-      const map = L.map("map", { zoomControl: false }).setView(
-        COUNTIES.cook.center,
-        11,
-      );
-      L.tileLayer(
-        "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=0fe6180c-ac8c-4bb7-b57d-c83f1706f2ef",
-      ).addTo(map);
-      const clusters = L.markerClusterGroup().addTo(map);
+    function createMarkerIcon(type) {
+      return L.divIcon({
+        className: "",
+        html: `<div class="apple-marker ${type}">${ICONS[type] || ICONS.other}</div>`,
+        iconSize: [42, 42],
+        iconAnchor: [21, 21]
+      });
+    }
 
-      async function loadData() {
-        try {
-          const res = await fetch("/api/v2/grants/");
-          DATA = await res.json();
-          setTimeout(() => {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("categoryNav").style.display = "block";
-            document.getElementById("stats").style.display = "block";
-            render();
-          }, 1000);
-        } catch (e) {
-          console.error(e);
-        }
+    function addMarker(resource) {
+      const marker = L.marker([resource.lat, resource.lng], {
+        icon: createMarkerIcon(resource.type),
+        keyboard: true,
+        title: resource.name
+      });
+      marker.on("click", () => showDetail(resource));
+      clusters.addLayer(marker);
+      return marker;
+    }
+
+    function drawDensityZone(points) {
+      if (densityLayer) {
+        map.removeLayer(densityLayer);
+        densityLayer = null;
       }
+      if (!points.length) return;
 
-      function setLang(lang) {
-        currentLang = lang;
-        document
-          .querySelectorAll(".lang-btn")
-          .forEach((b) => b.classList.toggle("active", b.id === `btn-${lang}`));
-        const t = TRANSLATIONS[lang];
-        document.getElementById("ui-title").innerText = t.title;
-        document.getElementById("ui-found").innerText = t.found;
-        document
-          .querySelectorAll(".cat-label")
-          .forEach((el) => (el.innerText = t[el.dataset.key]));
-        render();
+      densityLayer = L.layerGroup();
+      points.forEach(point => {
+        L.circle([point.lat, point.lng], {
+          radius: 1500,
+          stroke: true,
+          color: "#5787ef",
+          weight: 1,
+          opacity: .2,
+          fillColor: "#4f7ee8",
+          fillOpacity: .075,
+          interactive: false,
+          className: "density-zone"
+        }).addTo(densityLayer);
+      });
+      densityLayer.addTo(map);
+    }
+
+    function fitToData(points, options = {}) {
+      if (!points.length) return;
+      const bounds = L.latLngBounds(points.map(p => [p.lat, p.lng]));
+      const rightPad = window.innerWidth > 820 ? 360 : 40;
+      map.fitBounds(bounds, {
+        paddingTopLeft: [50, 50],
+        paddingBottomRight: [rightPad, 60],
+        maxZoom: options.maxZoom ?? 12,
+        animate: true,
+        duration: .65
+      });
+    }
+
+    function updateResourceList(points) {
+      resourceListEl.innerHTML = "";
+      if (!points.length) {
+        resourceListEl.innerHTML = `<div style="padding:10px;color:var(--muted);font-size:12px;">No matching resources.</div>`;
+        return;
       }
-
-      function changeCounty(key) {
-        const c = COUNTIES[key];
-        map.flyTo(c.center, c.zoom, { duration: 1.5 });
-        if (countyZone) map.removeLayer(countyZone);
-        countyZone = L.circle(c.center, {
-          radius: 18000,
-          color: "#4f8cff",
-          weight: 2,
-          fillOpacity: 0.1,
-          className: "county-zone",
-        }).addTo(map);
-        setTimeout(render, 500);
-      }
-
-      function filterCat(btn) {
-        document
-          .querySelectorAll("nav button")
-          .forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        render();
-      }
-
-      function render() {
-        clusters.clearLayers();
-        const type = document.querySelector("nav button.active").dataset.type;
-        const nameQ = document.getElementById("nameSearch").value.toLowerCase();
-        const zipQ = document.getElementById("zipSearch").value;
-
-        const filtered = DATA.filter((r) => {
-          const rCat = r.category?.toLowerCase() || "";
-          const matchType =
-            type === "all" ||
-            rCat === type ||
-            (type === "food" && rCat === "wic");
-          const matchName = r.title.toLowerCase().includes(nameQ);
-          const matchZip = !zipQ || (r.address && r.address.includes(zipQ));
-          return matchType && matchName && matchZip;
-        });
-
-        document.getElementById("count").innerText = filtered.length;
-        filtered.forEach((r) => {
-          if (r.lat && r.lng) {
-            let iconKey = (r.category || "food").toLowerCase();
-            if (iconKey === "wic") iconKey = "food";
-            const m = L.marker([r.lat, r.lng], {
-              icon: L.divIcon({
-                className: "apple-marker",
-                html: ICONS[iconKey] || ICONS.food,
-                iconSize: [48, 48],
-                iconAnchor: [24, 24],
-              }),
-            }).on("click", (e) => {
-              L.DomEvent.stopPropagation(e);
-              showDetail(r);
-            });
-            clusters.addLayer(m);
-          }
-        });
-      }
-
-      function showDetail(r) {
-        const card = document.getElementById("detailCard");
-        card.classList.add("active");
-        card.innerHTML = `
-          <div style="display:flex; justify-content:space-between; margin-bottom:15px">
-             <span style="color:#4caf50; font-weight:700">● ACTIVE</span>
-             <button onclick="this.closest('.detail-card').classList.remove('active')" style="background:none; border:none; color:white; cursor:pointer; font-size:20px">×</button>
-          </div>
-          <h2>${r.title}</h2>
-          <p style="color:var(--muted); line-height:1.5">${r.summary || ""}</p>
-          <div style="margin-top:15px; padding:10px; background:rgba(255,255,255,0.05); border-radius:12px">📍 ${r.address || "Verified"}</div>
-          <button class="map-btn" style="width:100%; margin-top:20px; font-size:14px; font-weight:700; background:var(--accent)" 
-                  onclick="window.open('https://www.google.com/maps?q=${r.lat},${r.lng}')">
-            ${TRANSLATIONS[currentLang].directions}
-          </button>
+      points.forEach(resource => {
+        const btn = document.createElement("button");
+        btn.className = "resource-item";
+        btn.type = "button";
+        btn.innerHTML = `
+          <div class="resource-name">${escapeHtml(resource.name)}</div>
+          <div class="resource-meta">${escapeHtml(resource.zip || "No ZIP")} · ${escapeHtml(resource.city || "")}</div>
         `;
-      }
+        btn.addEventListener("click", () => {
+          map.flyTo([resource.lat, resource.lng], Math.max(map.getZoom(), 14), { duration: .7 });
+          setTimeout(() => showDetail(resource), 180);
+        });
+        resourceListEl.appendChild(btn);
+      });
+    }
 
-      function locateUser() {
-        map.locate({ setView: true, maxZoom: 14 });
+    function updateAreaLabel(points) {
+      if (!currentQuery) {
+        areaLabelEl.textContent = currentType === "all" ? "All areas" : "Filtered";
+        return;
       }
-      map.on("click", () =>
-        document.getElementById("detailCard").classList.remove("active"),
+      const zips = [...new Set(points.map(p => p.zip).filter(Boolean))];
+      areaLabelEl.textContent = zips.length === 1 ? `ZIP ${zips[0]}` : `${zips.length || 0} ZIPs`;
+    }
+
+    function render({ fit = false } = {}) {
+      const token = ++activeRenderToken;
+      const points = getFilteredData();
+      countEl.textContent = points.length;
+      clearSearchEl.classList.toggle("enabled", Boolean(currentQuery));
+      updateAreaLabel(points);
+      updateResourceList(points);
+
+      // A short fade gap makes category changes feel intentional rather than abrupt.
+      clusters.eachLayer(layer => {
+        const el = layer.getElement && layer.getElement();
+        if (el) el.style.opacity = "0";
+      });
+
+      window.setTimeout(() => {
+        if (token !== activeRenderToken) return;
+        clusters.clearLayers();
+        points.forEach(addMarker);
+        drawDensityZone(points);
+        if (fit && points.length) fitToData(points);
+      }, 140);
+    }
+
+    function showDetail(r) {
+      const website = r.website ? `<div class="detail-row"><div class="detail-label">Website</div><div class="detail-value"><a href="${escapeAttr(r.website)}" target="_blank" rel="noopener">Open website</a></div></div>` : "";
+      const phone = r.phone ? `<div class="detail-row"><div class="detail-label">Phone</div><div class="detail-value"><a href="tel:${escapeAttr(r.phone)}">${escapeHtml(r.phone)}</a></div></div>` : "";
+      const eligibility = r.eligibility ? `<div class="detail-row"><div class="detail-label">Eligibility</div><div class="detail-value">${escapeHtml(r.eligibility)}</div></div>` : "";
+      const notes = r.notes ? `<div class="detail-row"><div class="detail-label">Notes</div><div class="detail-value">${escapeHtml(r.notes)}</div></div>` : "";
+
+      detailCardEl.innerHTML = `
+        <button class="detail-back" type="button" onclick="closeDetail()">← Back to map</button>
+        <h2>${escapeHtml(r.name)}</h2>
+        <p>${escapeHtml([r.address, r.city, r.zip].filter(Boolean).join(", "))}</p>
+        ${phone}
+        ${website}
+        ${eligibility}
+        ${notes}
+      `;
+      requestAnimationFrame(() => detailCardEl.classList.add("active"));
+    }
+
+    function closeDetail() {
+      detailCardEl.classList.remove("active");
+    }
+    window.closeDetail = closeDetail;
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttr(value) {
+      return escapeHtml(value);
+    }
+
+    document.querySelectorAll(".category-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentType = btn.dataset.type;
+        closeDetail();
+        render({ fit: true });
+      });
+    });
+
+    let searchTimer = null;
+    searchEl.addEventListener("input", event => {
+      currentQuery = event.target.value;
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        closeDetail();
+        render({ fit: Boolean(currentQuery.trim()) });
+      }, 180);
+    });
+
+    clearSearchEl.addEventListener("click", () => {
+      if (!currentQuery) return;
+      currentQuery = "";
+      searchEl.value = "";
+      closeDetail();
+      render({ fit: true });
+      searchEl.focus();
+    });
+
+    $("locateBtn").addEventListener("click", () => {
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(
+        pos => map.flyTo([pos.coords.latitude, pos.coords.longitude], 13, { duration: .8 }),
+        () => {
+          mapStatusEl.textContent = "Location access was not available.";
+          mapStatusEl.classList.remove("hidden");
+          setTimeout(() => mapStatusEl.classList.add("hidden"), 2500);
+        },
+        { enableHighAccuracy: false, timeout: 7000 }
       );
-      window.onload = loadData;
-    </script>
-  </body>
+    });
+
+    async function loadData() {
+      try {
+        const response = await fetch(DATA_URL, { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const raw = await response.json();
+        const normalized = flattenData(raw).map(normalizeResource);
+        const valid = normalized.filter(isValidResource);
+        const invalidCount = normalized.length - valid.length;
+
+        DATA = valid;
+        render({ fit: true });
+
+        mapStatusEl.textContent = invalidCount
+          ? `Loaded ${valid.length} resources · skipped ${invalidCount} invalid record${invalidCount === 1 ? "" : "s"}`
+          : `Loaded ${valid.length} resources`;
+        setTimeout(() => mapStatusEl.classList.add("hidden"), 1800);
+      } catch (error) {
+        console.error("Failed to load resources:", error);
+        DATA = [];
+        render();
+        mapStatusEl.textContent = `Could not load ${DATA_URL}. Check the local server and JSON syntax.`;
+        mapStatusEl.classList.remove("hidden");
+      }
+    }
+
+    loadData();
+  </script>
+</body>
 </html>
