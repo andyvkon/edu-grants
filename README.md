@@ -73,3 +73,18 @@ web/helpmap/data/       Pilot resource data
 main.py                 FastAPI application entry point
 mass_upload.py          Development bulk-ingestion utility
 requirements.txt        Python dependencies
+
+
+## Local Development
+
+Clone the repository and create a Python virtual environment:
+
+```powershell
+git clone https://github.com/andyvkon/edu-grants.git
+cd edu-grants
+
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
