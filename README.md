@@ -89,3 +89,38 @@ python -m venv .venv
 
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
+
+```
+
+Then open the HelpMap interface locally through the development server.
+
+## Development Roadmap
+
+Current development priorities include:
+
+1. Expanding verified resource categories
+2. Building a source-aware parser and ingestion pipeline
+3. Improving normalization and duplicate detection
+4. Adding verification metadata and periodic re-checks
+5. Strengthening production authentication and configuration
+6. Expanding employment, workforce-training, ESL, and self-sufficiency resources
+7. Preparing the platform for public pilot deployment
+8. Measuring navigation efficiency and data quality during pilot testing
+
+## Development and Testing Notice
+
+This repository contains an actively developed prototype.
+
+Some scripts and records are used specifically for development, API testing, and scalability testing. Simulated test records are not represented as verified community resources.
+
+Production security, deployment infrastructure, automated verification, and nationwide data coverage remain under development.
+
+## Developer
+
+**Andrii Volivach**  
+Computer Engineering / Civic Technology
+
+HelpMap combines software engineering with practical experience in community-resource navigation and public-service environments.
+
+The project is being developed as a free civic-technology resource-navigation platform with an emphasis on accessibility, data integrity, workforce participation, and economic self-sufficiency.
+
