@@ -72,7 +72,8 @@ web/helpmap/            Public HelpMap interface
 web/helpmap/data/       Pilot resource data
 main.py                 FastAPI application entry point
 mass_upload.py          Development bulk-ingestion utility
-requirements.txt        Python dependencies
+requirements.txt        Python dependencies 
+```
 
 
 ## Local Development
