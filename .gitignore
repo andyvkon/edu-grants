@@ -35,3 +35,6 @@ htmlcov/
 # Local temporary files
 *.tmp
 *.temp
+
+# Local SQLite databases
+*.db
