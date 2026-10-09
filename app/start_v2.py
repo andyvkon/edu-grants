@@ -1,4 +1,3 @@
-import json
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import RedirectResponse, JSONResponse
@@ -9,42 +8,10 @@ from app.routes import router as api_router
 # Путь к папке web
 WEB_PATH = Path(__file__).resolve().parents[1] / 'web'
 
-def seed_if_empty():
-    """Заполняет базу данных, если она пуста"""
-    conn = db.get_conn()
-    cur = conn.cursor()
-    
-    # Проверяем количество записей
-    cnt = cur.execute('SELECT COUNT(*) FROM grants').fetchone()[0]
-    
-    if cnt == 0:
-        print("DEBUG: База пуста, наполняем новыми данными...")
-        
-        hours_regular = json.dumps({
-            "Mon": "08:00-20:00", "Tue": "08:00-20:00", "Wed": "08:00-20:00",
-            "Thu": "08:00-20:00", "Fri": "08:00-17:00", "Sat": "Closed", "Sun": "Closed"
-        })
-
-        grants_data = [
-            ('WIC Program Center', 'Food assistance for women and children', 'published', 40.7128, -74.0060, 'WIC', hours_regular, 'https://example.com/wic'),
-            ('Immigration Legal Hub', 'Free legal aid for refugees and immigrants', 'published', 40.7306, -73.9352, 'Legal', hours_regular, 'https://example.com/legal'),
-            ('Shelter "Safe Haven"', 'Emergency housing and support', 'published', 40.7580, -73.9855, 'Shelter', hours_regular, 'https://example.com/shelter')
-        ]
-
-        cur.executemany('''
-            INSERT INTO grants (title, summary, status, lat, lng, category, working_hours, url) 
-            VALUES (?,?,?,?,?,?,?,?)
-        ''', grants_data)
-        conn.commit()
-        print("DEBUG: Данные успешно добавлены!")
-    
-    conn.close()
-
 def mount_static_and_routes(app: FastAPI):
     """Инициализирует БД, роуты и статику"""
-    # 1. Инициализация и наполнение БД
+    # 1. Инициализация БД. HelpMap never auto-seeds fake/demo resources.
     db.init_db()
-    seed_if_empty()
     
     # 2. Подключаем API роутер с префиксом /api
     app.include_router(api_router, prefix="/api")
