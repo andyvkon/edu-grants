@@ -38,3 +38,6 @@ htmlcov/
 
 # Local SQLite databases
 *.db
+
+# Downloaded source datasets
+Health_Center_Service_Delivery_and_LookAlike_Sites.csv
