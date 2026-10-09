@@ -346,7 +346,7 @@
 </head>
 <body>
   <div id="map"></div>
-  <div id="mapStatus" class="map-status">Loading resources…</div>
+  <div id="mapStatus" class="map-status">Loading resources...</div>
 
   <aside class="sidebar">
     <div class="sidebar-header">
@@ -354,7 +354,7 @@
         <h1>Community Aid Map</h1>
         <span class="status-dot" aria-hidden="true"></span>
       </div>
-      <div class="subtitle">Cook County pilot · ZIP-first resource discovery</div>
+      <div class="subtitle">Illinois pilot · verified resource discovery</div>
     </div>
 
     <div class="search-wrap">
@@ -408,13 +408,13 @@
   </aside>
 
   <section id="detailCard" class="detail-card" aria-live="polite"></section>
-  <button class="locate-btn" id="locateBtn" type="button" aria-label="Use my location">⌖</button>
+  <button class="locate-btn" id="locateBtn" type="button" aria-label="Use my location">◎</button>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
   <script>
-    const DATA_URL = "./data/resources.sample.json";
+    const DATA_URL = "http://127.0.0.1:8000/api/v2/grants/";
 
     const map = L.map("map", {
       zoomControl: true,
@@ -438,8 +438,8 @@
 
     // Keep clustering available for large future datasets, but show individual markers at our normal working zoom.
     const clusters = L.markerClusterGroup({
-      maxClusterRadius: 28,
-      disableClusteringAtZoom: 10,
+      maxClusterRadius: 60,
+      disableClusteringAtZoom: 17,
       showCoverageOnHover: false,
       spiderfyOnMaxZoom: true,
       removeOutsideVisibleBounds: true,
@@ -492,15 +492,19 @@
       return {
         ...r,
         id: r.id ?? `resource_${index + 1}`,
-        type: normalizeType(r.type),
-        name: String(r.name || "Unnamed resource").trim(),
+        type: normalizeType(r.category ?? r.type),
+        name: String(r.title ?? r.name ?? "Unnamed resource").trim(),
         lat,
         lng,
         zip: String(r.zip || "").trim(),
         city: String(r.city || "").trim(),
         address: String(r.address || "").trim(),
         phone: String(r.phone || "").trim(),
-        website: String(r.website || "").trim(),
+        hours: String(r.working_hours || r.hours || "").trim(),
+        source: String(r.source_name || "").trim(),
+        sourceUrl: String(r.source_url || "").trim(),
+        verified: String(r.verification_date || "").trim(),
+        website: String(r.website || r.url || "").trim(),
         eligibility: String(r.eligibility || "").trim(),
         notes: String(r.notes || "").trim()
       };
@@ -626,7 +630,7 @@
         if (token !== activeRenderToken) return;
         clusters.clearLayers();
         points.forEach(addMarker);
-        drawDensityZone(points);
+        // Density circles disabled; MarkerCluster handles density.
         if (fit && points.length) fitToData(points);
       }, 140);
     }
@@ -636,6 +640,8 @@
       const phone = r.phone ? `<div class="detail-row"><div class="detail-label">Phone</div><div class="detail-value"><a href="tel:${escapeAttr(r.phone)}">${escapeHtml(r.phone)}</a></div></div>` : "";
       const eligibility = r.eligibility ? `<div class="detail-row"><div class="detail-label">Eligibility</div><div class="detail-value">${escapeHtml(r.eligibility)}</div></div>` : "";
       const notes = r.notes ? `<div class="detail-row"><div class="detail-label">Notes</div><div class="detail-value">${escapeHtml(r.notes)}</div></div>` : "";
+      const source = r.source ? `<div class="detail-row"><div class="detail-label">Source</div><div class="detail-value">${escapeHtml(r.source)}</div></div>` : "";
+      const verified = r.verified ? `<div class="detail-row"><div class="detail-label">Verified</div><div class="detail-value">${escapeHtml(r.verified)}</div></div>` : "";
 
       detailCardEl.innerHTML = `
         <button class="detail-back" type="button" onclick="closeDetail()">← Back to map</button>
@@ -643,8 +649,14 @@
         <p>${escapeHtml([r.address, r.city, r.zip].filter(Boolean).join(", "))}</p>
         ${phone}
         ${website}
+        ${source}
+        ${verified}
         ${eligibility}
         ${notes}
+        <div class="detail-row">
+          <div class="detail-label">Directions</div>
+          <div class="detail-value"><a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(r.lat + "," + r.lng)}" target="_blank" rel="noopener">Open in Google Maps</a></div>
+        </div>
       `;
       requestAnimationFrame(() => detailCardEl.classList.add("active"));
     }
