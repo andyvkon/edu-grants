@@ -114,7 +114,8 @@ def transform_hrsa(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "lng": lng,
                 "phone": _clean(row.get("Site Telephone Number")),
                 "url": _clean(row.get("Site Web Address")),
-                "working_hours": hours,
+                "working_hours": None,
+                "weekly_service_hours": float(hours) if hours else None,
                 "source_name": "HRSA",
                 # Dataset identity rather than a guessed/dead API endpoint.
                 "source_url": "https://data.hrsa.gov/",

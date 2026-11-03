@@ -25,7 +25,7 @@ def list_grants(
     placeholders = ','.join('?' * len(statuses))
 
     sql = f'''
-        SELECT id, title, summary, status, lat, lng, category, working_hours, url, address, source_name, source_url, source_record_id, phone, city, state, zip, verification_date, imported_at 
+        SELECT id, title, summary, status, lat, lng, category, working_hours, weekly_service_hours, url, address, source_name, source_url, source_record_id, phone, city, state, zip, verification_date, imported_at
         FROM grants 
         WHERE status IN ({placeholders})
     '''

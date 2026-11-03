@@ -15,6 +15,7 @@ def _ensure_columns(conn):
     """Add HelpMap ingestion metadata without breaking existing databases."""
     existing = {row[1] for row in conn.execute('PRAGMA table_info(grants)').fetchall()}
     additions = {
+        'weekly_service_hours': 'REAL',
         'source_name': 'TEXT',
         'source_url': 'TEXT',
         'source_record_id': 'TEXT',
@@ -42,6 +43,7 @@ def init_db():
         lng REAL,
         category TEXT NOT NULL,
         working_hours TEXT,
+        weekly_service_hours REAL,
         url TEXT,
         address TEXT,
         source_name TEXT,

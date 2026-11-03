@@ -42,6 +42,7 @@ def normalize_record(raw: dict[str, Any]) -> dict[str, Any]:
         'phone': clean(raw.get('phone')),
         'url': clean(raw.get('url')),
         'working_hours': clean(raw.get('working_hours')),
+        'weekly_service_hours': raw.get('weekly_service_hours'),
         'source_name': clean(raw.get('source_name')),
         'source_url': clean(raw.get('source_url')),
         'source_record_id': clean(raw.get('source_record_id')),
@@ -100,10 +101,10 @@ def import_records(records: Iterable[dict[str, Any]], dry_run: bool = False) -> 
     imported_at = datetime.now(timezone.utc).isoformat(timespec='seconds')
     seen_in_batch = set()
     sql = '''INSERT INTO grants (
-        title, summary, status, lat, lng, category, working_hours, url, address,
+        title, summary, status, lat, lng, category, working_hours, weekly_service_hours, url, address,
         source_name, source_url, source_record_id, phone, city, state, zip,
         verification_date, imported_at
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
 
     try:
         for raw in records:
@@ -127,7 +128,7 @@ def import_records(records: Iterable[dict[str, Any]], dry_run: bool = False) -> 
             if not dry_run:
                 conn.execute(sql, (
                     record['title'], record['summary'], 'draft', record['lat'], record['lng'],
-                    record['category'], record['working_hours'], record['url'], record['address'],
+                    record['category'], record['working_hours'], record['weekly_service_hours'], record['url'], record['address'],
                     record['source_name'], record['source_url'], record['source_record_id'],
                     record['phone'], record['city'], record['state'], record['zip'],
                     record['verification_date'], imported_at,
