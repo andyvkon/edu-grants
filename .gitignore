@@ -41,3 +41,8 @@ htmlcov/
 
 # Downloaded source datasets
 Health_Center_Service_Delivery_and_LookAlike_Sites.csv
+
+/backups/
+
+__pycache__/
+*.pyc

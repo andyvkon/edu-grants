@@ -1,5 +1,5 @@
 from typing import Optional, List
-from fastapi import APIRouter, Query, HTTPException, Depends
+from fastapi import APIRouter, Query, HTTPException, Depends, Header
 from app.db import get_conn
 from app.security import require_admin
 
@@ -7,13 +7,23 @@ router = APIRouter()
 
 # --- 1. ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ КАРТЫ ---
 @router.get('/v2/grants/')
-def list_grants(q: Optional[str] = None, include_status: str = Query('published')):
+
+def list_grants(
+    q: Optional[str] = None,
+    include_status: str = Query('published'),
+    x_admin_token: str = Header(default="")
+):
     allowed = {'draft', 'published'}
     statuses = [s.strip() for s in include_status.split(',') if s.strip() in allowed]
+
     if not statuses:
         statuses = ['published']
-        
+
+    if 'draft' in statuses:
+        require_admin(x_admin_token)
+
     placeholders = ','.join('?' * len(statuses))
+
     sql = f'''
         SELECT id, title, summary, status, lat, lng, category, working_hours, url, address, source_name, source_url, source_record_id, phone, city, state, zip, verification_date, imported_at 
         FROM grants 

@@ -1,6 +1,13 @@
 ﻿from typing import Optional, Literal, List, Dict, Any
-from fastapi import APIRouter, Depends, Query, HTTPException
-from ..db import get_db
+from fastapi import APIRouter, Depends, Query, HTTPException, Header
+from ..db import get_conn
+
+def get_db():
+    db = get_conn()
+    try:
+        yield db
+    finally:
+        db.close()
 from ..security import require_admin
 
 router = APIRouter(prefix="/v2/grants", tags=["v2"])
@@ -12,7 +19,11 @@ def list_grants(
     location: Optional[str] = Query(None),
     tags: Optional[str] = Query(None),
     db = Depends(get_db),
+    x_admin_token: str = Header(default=""),
 ):
+    if include_status in ("draft", "all"):
+        require_admin(x_admin_token)
+
     sql = "SELECT * FROM grants WHERE 1=1"
     params: list = []
 
@@ -38,7 +49,11 @@ def get_grant(
     item_id: int,
     include_status: Literal["published","draft","all"] = Query("published"),
     db = Depends(get_db),
+    x_admin_token: str = Header(default=""),
 ):
+    if include_status in ("draft", "all"):
+        require_admin(x_admin_token)
+
     if include_status == "all":
         row = db.execute("SELECT * FROM grants WHERE id=?", (item_id,)).fetchone()
     else:
