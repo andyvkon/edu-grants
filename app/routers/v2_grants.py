@@ -65,14 +65,29 @@ def get_grant(
         raise HTTPException(status_code=404, detail="not found")
     return dict(row)
 
+
 @router.patch("/{item_id}/publish")
-def publish_grant(item_id: int, db = Depends(get_db), _=Depends(require_admin)):
-    db.execute("UPDATE grants SET status='published' WHERE id=?", (item_id,))
+def publish_grant(item_id: int, db=Depends(get_db), _=Depends(require_admin)):
+    cursor = db.execute(
+        "UPDATE grants SET status='published' WHERE id=?",
+        (item_id,)
+    )
+    if cursor.rowcount == 0:
+        raise HTTPException(status_code=404, detail="Resource not found")
+
     db.commit()
     return {"ok": True, "id": item_id, "status": "published"}
 
+
+
 @router.patch("/{item_id}/unpublish")
-def unpublish_grant(item_id: int, db = Depends(get_db), _=Depends(require_admin)):
-    db.execute("UPDATE grants SET status='draft' WHERE id=?", (item_id,))
+def unpublish_grant(item_id: int, db=Depends(get_db), _=Depends(require_admin)):
+    cursor = db.execute(
+        "UPDATE grants SET status='draft' WHERE id=?",
+        (item_id,)
+    )
+    if cursor.rowcount == 0:
+        raise HTTPException(status_code=404, detail="Resource not found")
+
     db.commit()
     return {"ok": True, "id": item_id, "status": "draft"}
