@@ -358,7 +358,7 @@
     </div>
 
     <div class="search-wrap">
-      <input id="search" inputmode="numeric" maxlength="5" placeholder="Search ZIP or resource name" />
+      <input id="search" type="search" maxlength="100" autocomplete="off" placeholder="Search ZIP or resource name" />
       <button id="clearSearch" type="button" aria-label="Clear search">Clear</button>
     </div>
 
@@ -635,8 +635,24 @@
       }, 140);
     }
 
+    function safeWebsiteUrl(value) {
+      if (!value) return "";
+      try {
+        let url = String(value).trim();
+        if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
+          url = "https://" + url;
+        }
+        const parsed = new URL(url);
+        if (!["http:", "https:"].includes(parsed.protocol)) return "";
+        return parsed.href;
+      } catch {
+        return "";
+      }
+    }
+
     function showDetail(r) {
-      const website = r.website ? `<div class="detail-row"><div class="detail-label">Website</div><div class="detail-value"><a href="${escapeAttr(r.website)}" target="_blank" rel="noopener">Open website</a></div></div>` : "";
+      const safeUrl = safeWebsiteUrl(r.website);
+      const website = safeUrl ? `<div class="detail-row"><div class="detail-label">Website</div><div class="detail-value"><a href="${escapeAttr(safeUrl)}" target="_blank" rel="noopener">Open website</a></div></div>` : "";
       const phone = r.phone ? `<div class="detail-row"><div class="detail-label">Phone</div><div class="detail-value"><a href="tel:${escapeAttr(r.phone)}">${escapeHtml(r.phone)}</a></div></div>` : "";
       const eligibility = r.eligibility ? `<div class="detail-row"><div class="detail-label">Eligibility</div><div class="detail-value">${escapeHtml(r.eligibility)}</div></div>` : "";
       const notes = r.notes ? `<div class="detail-row"><div class="detail-label">Notes</div><div class="detail-value">${escapeHtml(r.notes)}</div></div>` : "";
