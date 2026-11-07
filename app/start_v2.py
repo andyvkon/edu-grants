@@ -26,12 +26,3 @@ def mount_static_and_routes(app: FastAPI):
         if WEB_PATH.exists():
             return RedirectResponse(url="/web/helpmap/index.html")
         return JSONResponse({"status": "error", "details": f"Folder web not found at {WEB_PATH}"})
-
-    # 5. Отладка пути
-    @app.get('/__debug/web')
-    async def debug_web():
-        return {
-            'exists': WEB_PATH.exists(),
-            'path': str(WEB_PATH),
-            'files': [p.name for p in WEB_PATH.glob('*')] if WEB_PATH.exists() else []
-        }
