@@ -341,6 +341,12 @@
         width: auto;
         max-height: 62vh;
       }
+      .resource-name { font-size: 15px; }
+      .resource-meta { font-size: 13px; }
+      .detail-card p { font-size: 15px; }
+      .detail-value { font-size: 15px; }
+      .detail-label { font-size: 12px; }
+      .detail-back { font-size: 15px; }
     }
   </style>
 </head>
@@ -414,7 +420,7 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
   <script>
-    const DATA_URL = "http://127.0.0.1:8000/api/v2/grants/";
+    const DATA_URL = "/api/v2/grants/";
 
     const map = L.map("map", {
       zoomControl: true,
