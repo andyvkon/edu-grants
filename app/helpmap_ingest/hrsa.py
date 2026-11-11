@@ -120,7 +120,7 @@ def transform_hrsa(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 # Dataset identity rather than a guessed/dead API endpoint.
                 "source_url": "https://data.hrsa.gov/",
                 "source_record_id": str(record_id),
-                "verification_date": date.today().isoformat(),
+                "verification_date": None,
             }
         )
 
