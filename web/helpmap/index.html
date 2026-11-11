@@ -438,7 +438,7 @@
         updateWhenZooming: false,
         keepBuffer: 1,
         detectRetina: false,
-        attribution: "&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap"
+        attribution: "&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap contributors"
       }
     ).addTo(map);
 
@@ -676,8 +676,8 @@
         ${eligibility}
         ${notes}
         <div class="detail-row">
-          <div class="detail-label">Directions</div>
-          <div class="detail-value"><a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(r.lat + "," + r.lng)}" target="_blank" rel="noopener">Open in Google Maps</a></div>
+          <div class="detail-label">Photos & Reviews</div>
+          <div class="detail-value"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.title + " " + (r.address || "") + " " + (r.city || "") + " " + (r.state || ""))}" target="_blank" rel="noopener">Open in Google Maps</a></div>
         </div>
       `;
       requestAnimationFrame(() => detailCardEl.classList.add("active"));
