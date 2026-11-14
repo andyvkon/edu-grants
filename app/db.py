@@ -57,6 +57,16 @@ def init_db():
         imported_at TEXT
     )''')
     _ensure_columns(conn)
+    cur.execute('''CREATE TABLE IF NOT EXISTS resource_source_records (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        resource_id INTEGER NOT NULL,
+        source_name TEXT NOT NULL,
+        source_record_id TEXT NOT NULL,
+        raw_data TEXT,
+        needs_review INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (resource_id) REFERENCES grants(id),
+        UNIQUE (source_name, source_record_id)
+    )''')
     cur.execute('CREATE INDEX IF NOT EXISTS idx_grants_status ON grants(status)')
     cur.execute('CREATE INDEX IF NOT EXISTS idx_grants_source_record ON grants(source_name, source_record_id)')
     cur.execute('CREATE INDEX IF NOT EXISTS idx_grants_title_address ON grants(title, address)')

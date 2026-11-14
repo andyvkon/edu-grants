@@ -121,6 +121,7 @@ def transform_hrsa(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "source_url": "https://data.hrsa.gov/",
                 "source_record_id": str(record_id),
                 "verification_date": None,
+                "_source_raw": dict(row),
             }
         )
 

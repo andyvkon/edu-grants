@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import json
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from typing import Any, Iterable
@@ -94,50 +95,168 @@ def _is_duplicate(conn, record: dict[str, Any]) -> bool:
     return False
 
 
+
 def import_records(records: Iterable[dict[str, Any]], dry_run: bool = False) -> ImportStats:
     db.init_db()
     stats = ImportStats()
     conn = db.get_conn()
     imported_at = datetime.now(timezone.utc).isoformat(timespec='seconds')
-    seen_in_batch = set()
-    sql = '''INSERT INTO grants (
+
+    sql = """INSERT INTO grants (
         title, summary, status, lat, lng, category, working_hours, weekly_service_hours, url, address,
         source_name, source_url, source_record_id, phone, city, state, zip,
         verification_date, imported_at
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'''
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"""
+
+    source_index = {}
+    location_index = {}
+    original_location = {}
+    primary_source_id = {}
+    stored_snapshots = {}
+
+    for row in conn.execute(
+        'SELECT id, title, address, source_name, source_record_id FROM grants'
+    ):
+        rid = row['id']
+        name = clean(row['source_name'])
+        sid = clean(row['source_record_id'])
+        title = normalize_key(row['title'])
+        address = normalize_key(row['address'])
+
+        if sid:
+            source_index.setdefault((name, sid), rid)
+
+        if title and address:
+            key = (name, title, address)
+            location_index.setdefault(key, rid)
+            original_location[rid] = key
+
+        primary_source_id[rid] = sid
+
+    for row in conn.execute(
+        'SELECT resource_id, source_name, source_record_id, raw_data '
+        'FROM resource_source_records'
+    ):
+        key = (row['source_name'], row['source_record_id'])
+        source_index[key] = row['resource_id']
+        stored_snapshots[key] = row['raw_data']
+
+    next_virtual_id = -1
 
     try:
         for raw in records:
             stats.received += 1
             record = normalize_record(raw)
+
             if validate_record(record):
                 stats.errors += 1
                 continue
+
             stats.valid += 1
-            source_key = ('source', record['source_name'], record['source_record_id']) if record['source_record_id'] else None
-            location_key = ('location', normalize_key(record['title']), normalize_key(record['address'])) if record['address'] else None
-            if ((source_key and source_key in seen_in_batch)
-                    or (location_key and location_key in seen_in_batch)
-                    or _is_duplicate(conn, record)):
+
+            name = record['source_name']
+            sid = record['source_record_id']
+            source_key = (name, sid) if sid else None
+
+            title = normalize_key(record['title'])
+            address = normalize_key(record['address'])
+            location_key = (
+                (name, title, address)
+                if title and address else None
+            )
+
+            if source_key and source_key in source_index:
+                rid = source_index[source_key]
+                match_type = 'source'
+
+            elif location_key and location_key in location_index:
+                rid = location_index[location_key]
+                match_type = 'location'
+
+            else:
+                match_type = 'new'
+
+                if dry_run:
+                    rid = next_virtual_id
+                    next_virtual_id -= 1
+                else:
+                    cur = conn.execute(sql, (
+                        record['title'], record['summary'], 'draft',
+                        record['lat'], record['lng'], record['category'],
+                        record['working_hours'],
+                        record['weekly_service_hours'],
+                        record['url'], record['address'],
+                        name, record['source_url'], sid,
+                        record['phone'], record['city'],
+                        record['state'], record['zip'],
+                        record['verification_date'], imported_at,
+                    ))
+                    rid = cur.lastrowid
+
+                stats.inserted += 1
+                primary_source_id[rid] = sid
+
+                if location_key:
+                    location_index[location_key] = rid
+                    original_location[rid] = location_key
+
+            if match_type != 'new':
                 stats.duplicates += 1
-                continue
+
             if source_key:
-                seen_in_batch.add(source_key)
-            if location_key:
-                seen_in_batch.add(location_key)
-            if not dry_run:
-                conn.execute(sql, (
-                    record['title'], record['summary'], 'draft', record['lat'], record['lng'],
-                    record['category'], record['working_hours'], record['weekly_service_hours'], record['url'], record['address'],
-                    record['source_name'], record['source_url'], record['source_record_id'],
-                    record['phone'], record['city'], record['state'], record['zip'],
-                    record['verification_date'], imported_at,
-                ))
-            stats.inserted += 1
+                source_index[source_key] = rid
+
+                if not dry_run:
+                    snapshot = json.dumps(
+                        raw.get('_source_raw', raw),
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        default=str,
+                    )
+
+                    if source_key not in stored_snapshots:
+                        review = (
+                            (
+                                match_type == 'location'
+                                and primary_source_id.get(rid) != sid
+                            )
+                            or (
+                                match_type == 'source'
+                                and location_key
+                                and original_location.get(rid)
+                                and original_location[rid] != location_key
+                            )
+                        )
+
+                        conn.execute(
+                            'INSERT INTO resource_source_records '
+                            '(resource_id, source_name, source_record_id, '
+                            'raw_data, needs_review) VALUES (?,?,?,?,?)',
+                            (
+                                rid, name, sid, snapshot,
+                                int(bool(review)),
+                            ),
+                        )
+                        stored_snapshots[source_key] = snapshot
+
+                    elif stored_snapshots[source_key] != snapshot:
+                        # Preserve the first snapshot; flag changes for review.
+                        conn.execute(
+                            'UPDATE resource_source_records '
+                            'SET needs_review=1 '
+                            'WHERE source_name=? AND source_record_id=?',
+                            source_key,
+                        )
+
         if dry_run:
             conn.rollback()
         else:
             conn.commit()
+
+    except Exception:
+        conn.rollback()
+        raise
     finally:
         conn.close()
+
     return stats

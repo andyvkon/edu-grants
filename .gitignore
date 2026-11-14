@@ -48,3 +48,7 @@ __pycache__/
 *.pyc
 
 data/sources/
+/data/*.db
+/data/*.db-*
+/data/backups/
+/web/helpmap/*.bak
